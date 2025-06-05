@@ -1,0 +1,20 @@
+site_name: 统一身份认证用户手册
+site_url: https://id.ustc.edu.cn/doc/
+repo_url: https://githu.com/wf0229/id_doc
+repo_name: Github
+
+nav:
+        - Home: index.md
+
+theme:
+        name: material
+        palette:
+                primary: indigo
+                accent: indigo
+
+markdown_extensions:
+        - toc:
+                permalink: true
+        - tables
+        - admonition
+        - codehilite
