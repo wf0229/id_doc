@@ -1,17 +1,72 @@
-# Welcome to MkDocs
+# 中国科学技术大学 统一身份认证 用户手册
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+中国科大统一身份认证是由中国科大网络信息中心技术团队联合北京星网锐捷网络技术有限公司，在 [锐捷 RG-SourceID](https://www.ruijie.com.cn/cp/yyxt-sfzt/sourceid/) 产品基础上深度共创研发而成，面向科大师生、校友及关联用户提供全流程统一的身份管理和服务系统，支持**一次认证、多系统通行**的安全身份管理能力，支持多种登录方式和安全验证手段，保障账号与数据安全。。
 
-## Commands
+👉 统一身份认证网址：[https://id.ustc.edu.cn](https://id.ustc.edu.cn)
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+!!! warning "账号使用须知"
+    统一身份认证账号<span style="color:red">**仅限本人使用**</span>。任何外借、共享、委托他人使用均视为违规行为。
 
-## Project layout
+    系统将持续监测账户安全，对违规使用行为视情节采取**冻结、锁定、注销等措施**，并保留追究相关责任的权利。
+---
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+请根据您的身份选择相应的操作指引。
+
+---
+
+## 🧑‍🎓 校内师生
+
+如您是在校师生，请先查阅以下信息：
+
+### 📢 通知公告
+
+- **2025-07-09** — [微信扫码登录测试结束](notice.md#2025-07-09-微信扫码登录结束测试开放时间另行通知)  
+- **2025-03-26** — [微信扫码登录计划更新](notice.md#2025-03-26-微信扫码登录计划更新)
+- **2025-02-10** — [微信扫码认证临时关闭](notice.md#2025-02-10-新版统一身份认证已切换)
+
+👉 [查看全部通知](notice.md)
+
+---
+
+### ❓ 常见问题
+
+- [校友能否访问WVPN、IDP等系统](faq.md#校友能否访问wvpnidp等系统)
+- [账号无法访问OA公文、财务、合同等系统](faq.md#账号无法访问oa公文财务合同等系统)
+- [什么是动态因子](faq.md#什么是动态因子totp)
+
+如需更多帮助，请参考 [常见问题](faq.md)。
+
+---
+
+### 🆘 用户服务支持
+
+- **客服邮箱：** [nic@ustc.edu.cn](mailto:nic@ustc.edu.cn)
+- **客服电话：** 0551-63600800
+- **服务时间：** 工作日 8:00–18:00
+
+---
+
+## 🧑‍💻 第三方应用 / 开发者
+
+如您是**第三方应用开发者或校内系统对接方**，请查阅以下文档：
+
+- [安全更新提示](security.md)
+- [第三方应用接入指南](developer.md)
+
+---
+
+### 🛡️ 安全通告
+
+- **2024-12-11** — 认证系统不再支持 **TLS 1.0 和 1.1**
+
+---
+
+### 🐞 漏洞报告 / 系统建议
+
+如发现系统安全漏洞或有改进建议，请联系：
+
+- **电子邮箱：** [wf0229@ustc.edu.cn](mailto:wf0229@ustc.edu.cn)
+- **固定电话：** 0551-63601592
+- **联系地址：** 东校区新科研楼 网络信息中心309室
+
+---
