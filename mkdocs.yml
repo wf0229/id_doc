@@ -1,10 +1,18 @@
 site_name: 统一身份认证用户手册
 site_url: https://id.ustc.edu.cn/doc/
-repo_url: https://githu.com/wf0229/id_doc
+repo_url: https://github.com/wf0229/id_doc
 repo_name: Github
 
 nav:
-        - Home: index.md
+        - 首页: index.md
+        - 师生用户：
+                - 通知公告: notice.md
+                - 常见问题: faq.md
+                - 通行密钥: passkey.md
+                - 微信登录: wechat.md
+        - 开发者：
+                - 安全须知: security.md
+                - 开发者对接: developer.md
 
 theme:
         name: material
