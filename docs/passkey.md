@@ -11,10 +11,10 @@
 
 ```mermaid
 sequenceDiagram
-    title Passkey 注册过程（创建钥匙）
+    title 通行密钥 注册过程（创建钥匙）
     participant U as 🧑 用户
-    participant P as 🌐 网站/应用
     participant D as 🔐 用户设备（手机/电脑）
+    participant P as 🌐 网站/应用
 
     U->>P: 我要注册账号
     P-->>D: 请帮他做一把独一无二的“数字钥匙”
@@ -25,10 +25,10 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title Passkey 登录过程（用钥匙开门）
+    title 通行密钥 登录过程（用钥匙开门）
     participant U as 🧑 用户
-    participant P as 🌐 网站/应用
     participant D as 🔐 用户设备（手机/电脑）
+    participant P as 🌐 网站/应用
 
     U->>P: 我想登录
     P-->>D: 请验证他是否真的是房主
@@ -38,7 +38,7 @@ sequenceDiagram
     P-->>U: 欢迎回来 👋
 ```
 
-```
+```mermaid
 flowchart TB
     title Passkey 安全原理图（通俗理解）
     A[🚫 钓鱼网站] -->|骗不了钥匙| B[✅ 每个网站的钥匙都不同]
