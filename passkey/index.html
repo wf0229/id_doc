@@ -636,12 +636,6 @@
 
 <h1 id="_1">通行密钥<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <p>「通行密钥」是存储在你的移动设备上的加密密钥。通过验证你的生物信息（如指纹、面容识别）来验证这个密钥，无需输入复杂的密码，即可快速登录中国科大统一身份认证。</p>
-<div class="admonition warning">
-<p class="admonition-title">统一身份认证不存储你的生物信息如指纹、面容等</p>
-<p>通行密钥这种登录方式的原理是将<span style="color:red"><strong>个人可信设备</strong></span>（如电脑、手机等）注册至统一身份认证系统，认证逻辑是<strong>你能解锁这个个人可信设备，证明你是设备的拥有者</strong>，进而完成登录认证。</p>
-<p>更直观的一个类比是，将个人电脑、手机当成“银行优盾”，使用过程中用户使用PIN码、指纹、面容识别来解锁“优盾”，即可完成系统认证。</p>
-</div>
-<hr />
 <div class="codehilite"><pre><span></span><code><span class="n">sequenceDiagram</span>
 <span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="err">通行密钥</span><span class="w"> </span><span class="err">注册过程（创建钥匙）</span>
 <span class="w">    </span><span class="n">participant</span><span class="w"> </span><span class="n">U</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="err">🧑</span><span class="w"> </span><span class="n">USTCer</span>
@@ -670,7 +664,7 @@
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">flowchart</span><span class="w"> </span><span class="n">TB</span>
-<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="n">Passkey</span><span class="w"> </span><span class="err">安全原理图（通俗理解）</span>
+<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="err">通行密钥</span><span class="w"> </span><span class="err">安全原理图</span>
 <span class="w">    </span><span class="n">A</span><span class="p">[</span><span class="err">🚫</span><span class="w"> </span><span class="err">钓鱼网站</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">骗不了钥匙</span><span class="o">|</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="err">✅</span><span class="w"> </span><span class="err">每个网站的钥匙都不同</span><span class="p">]</span>
 <span class="w">    </span><span class="n">C</span><span class="p">[</span><span class="err">🚫</span><span class="w"> </span><span class="err">密码泄露</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">没密码可偷</span><span class="o">|</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="err">✅</span><span class="w"> </span><span class="err">钥匙藏在设备安全芯片</span><span class="p">]</span>
 <span class="w">    </span><span class="n">E</span><span class="p">[</span><span class="err">🚫</span><span class="w"> </span><span class="err">假网站</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;|</span><span class="err">验证失败</span><span class="o">|</span><span class="w"> </span><span class="n">F</span><span class="p">[</span><span class="err">✅</span><span class="w"> </span><span class="err">网站身份自动校验</span><span class="p">]</span>
