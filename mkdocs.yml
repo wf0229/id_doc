@@ -15,7 +15,7 @@ nav:
     - 开发者对接: developer.md
 
 theme:
-  name: material
+  name: material2
   language: zh
   features:
     - navigation.expand 
@@ -23,14 +23,9 @@ theme:
     primary: indigo
     accent: indigo
 
-plugins:
-  - search
-
 markdown_extensions:
   - toc:
       permalink: true
   - tables
   - admonition
-  - pymdownx.highlight
-  - pymdownx.details
-  - pymdownx.superfences
+  - codehilite
