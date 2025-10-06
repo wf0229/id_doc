@@ -616,13 +616,12 @@
 <p>统一身份认证系统将在新版本更新后<strong>移除对 TLS 1.0 和 1.1 的支持</strong>（依据 <a href="https://datatracker.ietf.org/doc/html/rfc8996">RFC8996</a>），同时增加对 TLS 1.3 的支持。</p>
 <p>如有疑问，请联系<a href="mailto:wf0229@ustc.edu.cn">wf0229@ustc.edu.cn</a></p>
 <h3 id="_2">🌿 你可以在服务器测试支持情况<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 测试 TLS 1.2</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 测试 TLS 1.2</span>
 curl<span class="w"> </span>-v<span class="w"> </span>--tlsv1.2<span class="w"> </span>https://passport.ustc.edu.cn/healthcheck
 
 <span class="c1"># 测试 TLS 1.3</span>
 curl<span class="w"> </span>-v<span class="w"> </span>--tlsv1.3<span class="w"> </span>https://passport.ustc.edu.cn/healthcheck
 </code></pre></div>
-
 <hr />
 
 
@@ -676,6 +675,8 @@ curl<span class="w"> </span>-v<span class="w"> </span>--tlsv1.3<span class="w"> 
     
     
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11.12.0/dist/mermaid.min.js"></script>
       
     
   </body>

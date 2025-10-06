@@ -1018,15 +1018,13 @@
 </tbody>
 </table>
 <p>示例代码：</p>
-<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>https://id.ustc.edu.cn/cas/oauth2.0/authorize?response_type<span class="o">=</span>code<span class="p">&amp;</span><span class="nv">client_id</span><span class="o">=</span>oauth_test_client_id<span class="p">&amp;</span><span class="nv">redirect_uri</span><span class="o">=</span>https%3A%2F%2Fwebapp.ustc.edu.cn%2Fcallback
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>https://id.ustc.edu.cn/cas/oauth2.0/authorize?response_type<span class="o">=</span>code<span class="p">&amp;</span><span class="nv">client_id</span><span class="o">=</span>oauth_test_client_id<span class="p">&amp;</span><span class="nv">redirect_uri</span><span class="o">=</span>https%3A%2F%2Fwebapp.ustc.edu.cn%2Fcallback
 </code></pre></div>
-
 <p>统一身份认证接到请求后，会向<strong>用户代理</strong>（User Agent，即浏览器）展示登录页面。</p>
 <p>用户提供有效登录凭据后，统一身份认证服务器向<strong>用户代理</strong>做出响应：</p>
-<div class="codehilite"><pre><span></span><code><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Found</span>
+<div class="highlight"><pre><span></span><code><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Found</span>
 <span class="na">Location</span><span class="o">:</span> <span class="l">https://webapp.ustc.edu.cn/callback?code=ABCD1234&amp;state=xyz123</span>
 </code></pre></div>
-
 <p>其中:</p>
 <table>
 <thead>
@@ -1075,9 +1073,8 @@
 </tbody>
 </table>
 <p>在获取 <code>access_token</code> 时，需要增加请求头:</p>
-<div class="codehilite"><pre><span></span><code><span class="err">Content-Type: application/x-www-form-urlencoded</span>
+<div class="highlight"><pre><span></span><code><span class="err">Content-Type: application/x-www-form-urlencoded</span>
 </code></pre></div>
-
 <p>同时携带相关参数：</p>
 <table>
 <thead>
@@ -1121,24 +1118,22 @@
 </tr>
 </tbody>
 </table>
-<p>🌿 请求示例</p>
-<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/oauth2.0/accessToken&quot;</span><span class="w"> </span><span class="se">\</span>
+<p>🌿 请求示例
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/oauth2.0/accessToken&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/x-www-form-urlencoded&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;grant_type=authorization_code&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;client_id=oauth_test_client_id&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;client_secret=9aggRf1kk0tS...&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;redirect_uri=http%3A%2F%2Fwebapp.ustc.edu.cn%2Fcallback&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;code=OC-9-iQBaj2rYndjtttJqJE9P6Qn-eoinZGnJ&quot;</span>
-</code></pre></div>
-
+</code></pre></div></p>
 <p>统一身份认证服务器在验证成功后将返回如下响应：</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;access_token&quot;</span><span class="p">:</span><span class="s2">&quot;AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;token_type&quot;</span><span class="p">:</span><span class="s2">&quot;bearer&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;expires_in&quot;</span><span class="p">:</span><span class="mi">28800</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <p>其中：</p>
 <table>
 <thead>
@@ -1204,9 +1199,8 @@
 </tbody>
 </table>
 <p>在获取用户信息时，需要增加请求头:</p>
-<div class="codehilite"><pre><span></span><code><span class="err">Content-Type: application/x-www-form-urlencoded</span>
+<div class="highlight"><pre><span></span><code><span class="err">Content-Type: application/x-www-form-urlencoded</span>
 </code></pre></div>
-
 <p>同时携带相关参数：</p>
 <table>
 <thead>
@@ -1227,13 +1221,12 @@
 </tbody>
 </table>
 <p>🌿 POST 请求示例</p>
-<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/oauth2.0/profile&quot;</span><span class="w"> </span><span class="se">\</span>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/oauth2.0/profile&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/x-www-form-urlencoded&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;access_token=AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU&quot;</span>
 </code></pre></div>
-
 <p>统一身份认证服务器在验证成功后将返回如下响应：</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;active&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="nt">&quot;deptCode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;304&quot;</span><span class="p">,</span>
@@ -1254,7 +1247,6 @@
 <span class="w">    </span><span class="nt">&quot;client_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xxx&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <p>返回参数说明：</p>
 <table>
 <thead>
@@ -1363,9 +1355,8 @@
 </tbody>
 </table>
 <p>同样的，需要增加请求头:</p>
-<div class="codehilite"><pre><span></span><code><span class="err">Content-Type: application/x-www-form-urlencoded</span>
+<div class="highlight"><pre><span></span><code><span class="err">Content-Type: application/x-www-form-urlencoded</span>
 </code></pre></div>
-
 <p>请求参数：</p>
 <table>
 <thead>
@@ -1386,13 +1377,12 @@
 </tbody>
 </table>
 <p>🌿 POST 请求示例</p>
-<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/oauth2.0/oauthcode/multiple/identity&quot;</span><span class="w"> </span><span class="se">\</span>
+<p><div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/oauth2.0/oauthcode/multiple/identity&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: multipart/form-data&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-F<span class="w"> </span><span class="s2">&quot;access_token=AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU&quot;</span>
 </code></pre></div>
-
-<p>统一身份认证服务器在验证成功后将返回如下示例（以“主任”和“组长”多身份为例）：</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+统一身份认证服务器在验证成功后将返回如下示例（以“主任”和“组长”多身份为例）：</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;45433&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;users&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
@@ -1416,7 +1406,6 @@
 <span class="w">    </span><span class="p">]</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <p>返回参数说明：</p>
 <table>
 <thead>
@@ -1559,15 +1548,13 @@
 <li>中国科大统一身份认证服务器<code>/login</code>接口不支持<code>method</code>参数</li>
 </ul>
 <p>🌿 请求示例</p>
-<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/login?service=https%3A%2F%2Fwebapp.ustc.edu.cn%2Flogin%2Fcas_login&quot;</span>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/login?service=https%3A%2F%2Fwebapp.ustc.edu.cn%2Flogin%2Fcas_login&quot;</span>
 </code></pre></div>
-
 <p>统一身份认证接到请求后，会向<strong>用户代理</strong>（User Agent，即浏览器）展示登录页面。</p>
 <p>用户提供有效登录凭据后，统一身份认证服务器向<strong>用户代理</strong>做出响应：</p>
-<div class="codehilite"><pre><span></span><code><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Found</span>
+<div class="highlight"><pre><span></span><code><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Found</span>
 <span class="na">Location</span><span class="o">:</span> <span class="l">https://webapp.ustc.edu.cn/login/cas_login?ticket=ST-368-gChqIqVuq9j83YCG9dw4sh1KDaMrg-sso-fddcfb8db-z9ng2</span>
 </code></pre></div>
-
 <p>参数说明：</p>
 <table>
 <thead>
@@ -1642,11 +1629,10 @@
 </tbody>
 </table>
 <p>统一身份认证服务器默认返回xml结构：</p>
-<div class="codehilite"><pre><span></span><code>
+<div class="highlight"><pre><span></span><code>
 </code></pre></div>
-
 <p>如果传递了<code>formate=json</code>，则返回<code>json</code>格式数据</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;active&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="nt">&quot;deptCode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;304&quot;</span><span class="p">,</span>
@@ -1667,7 +1653,6 @@
 <span class="w">    </span><span class="nt">&quot;client_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xxx&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <p>参数说明：</p>
 <table>
 <thead>
@@ -1972,6 +1957,8 @@
     
     
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11.12.0/dist/mermaid.min.js"></script>
       
     
   </body>

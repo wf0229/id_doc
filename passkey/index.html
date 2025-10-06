@@ -636,33 +636,31 @@
 
 <h1 id="_1">通行密钥<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <p>「通行密钥」是存储在你的移动设备上的加密密钥。通过验证你的生物信息（如指纹、面容识别）来验证这个密钥，无需输入复杂的密码，即可快速登录中国科大统一身份认证。</p>
-<div class="codehilite"><pre><span></span><code><span class="n">sequenceDiagram</span>
-<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="err">通行密钥</span><span class="w"> </span><span class="err">注册过程（创建钥匙）</span>
-<span class="w">    </span><span class="n">participant</span><span class="w"> </span><span class="n">U</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="err">🧑</span><span class="w"> </span><span class="n">USTCer</span>
-<span class="w">    </span><span class="n">participant</span><span class="w"> </span><span class="n">D</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="err">🔐</span><span class="w"> </span><span class="err">你的设备（手机</span><span class="o">/</span><span class="err">电脑）</span>
-<span class="w">    </span><span class="n">participant</span><span class="w"> </span><span class="n">P</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="err">🌐</span><span class="w"> </span><span class="err">科大统一身份认证</span>
+<div class="highlight"><pre><span></span><code>sequenceDiagram
+    title 通行密钥 注册过程（创建钥匙）
+    participant U as 🧑 USTCer
+    participant D as 🔐 你的设备（手机/电脑）
+    participant P as 🌐 科大统一身份认证
 
-<span class="w">    </span><span class="n">U</span><span class="o">-&gt;&gt;</span><span class="n">P</span><span class="o">:</span><span class="w"> </span><span class="err">我要注册账号</span>
-<span class="w">    </span><span class="n">P</span><span class="o">--&gt;&gt;</span><span class="n">D</span><span class="o">:</span><span class="w"> </span><span class="err">请帮他做一把独一无二的“数字钥匙”</span>
-<span class="w">    </span><span class="n">D</span><span class="o">-&gt;&gt;</span><span class="n">D</span><span class="o">:</span><span class="w"> </span><span class="err">在设备里安全地造一把钥匙</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="err">（只留在自己设备上）</span>
-<span class="w">    </span><span class="n">D</span><span class="o">--&gt;&gt;</span><span class="n">P</span><span class="o">:</span><span class="w"> </span><span class="err">把“钥匙印章”交给网站保存</span>
-<span class="w">    </span><span class="n">P</span><span class="o">--&gt;&gt;</span><span class="n">U</span><span class="o">:</span><span class="w"> </span><span class="err">注册完成，下次登录用这把钥匙就行啦！</span>
+    U-&gt;&gt;P: 我要注册账号
+    P--&gt;&gt;D: 请帮他做一把独一无二的“数字钥匙”
+    D-&gt;&gt;D: 在设备里安全地造一把钥匙&lt;br/&gt;（只留在自己设备上）
+    D--&gt;&gt;P: 把“钥匙印章”交给网站保存
+    P--&gt;&gt;U: 注册完成，下次登录用这把钥匙就行啦！
 </code></pre></div>
+<div class="highlight"><pre><span></span><code>sequenceDiagram
+    title 通行密钥 登录过程（用钥匙开门）
+    participant U as 🧑 USTCer
+    participant D as 🔐 你的设备（手机/电脑）
+    participant P as 🌐 科大统一身份认证
 
-<div class="codehilite"><pre><span></span><code><span class="n">sequenceDiagram</span>
-<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="err">通行密钥</span><span class="w"> </span><span class="err">登录过程（用钥匙开门）</span>
-<span class="w">    </span><span class="n">participant</span><span class="w"> </span><span class="n">U</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="err">🧑</span><span class="w"> </span><span class="n">USTCer</span>
-<span class="w">    </span><span class="n">participant</span><span class="w"> </span><span class="n">D</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="err">🔐</span><span class="w"> </span><span class="err">你的设备（手机</span><span class="o">/</span><span class="err">电脑）</span>
-<span class="w">    </span><span class="n">participant</span><span class="w"> </span><span class="n">P</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="err">🌐</span><span class="w"> </span><span class="err">科大统一身份认证</span>
-
-<span class="w">    </span><span class="n">U</span><span class="o">-&gt;&gt;</span><span class="n">P</span><span class="o">:</span><span class="w"> </span><span class="n">USTCer想登录</span>
-<span class="w">    </span><span class="n">P</span><span class="o">--&gt;&gt;</span><span class="n">D</span><span class="o">:</span><span class="w"> </span><span class="err">请验证他是否真的是设备的主人</span>
-<span class="w">    </span><span class="n">D</span><span class="o">-&gt;&gt;</span><span class="n">U</span><span class="o">:</span><span class="w"> </span><span class="err">请用指纹</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">面部</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">解锁确认</span>
-<span class="w">    </span><span class="n">U</span><span class="o">-&gt;&gt;</span><span class="n">D</span><span class="o">:</span><span class="w"> </span><span class="err">（确认通过）</span>
-<span class="w">    </span><span class="n">D</span><span class="o">--&gt;&gt;</span><span class="n">P</span><span class="o">:</span><span class="w"> </span><span class="err">验证通过，没问题！</span>
-<span class="w">    </span><span class="n">P</span><span class="o">--&gt;&gt;</span><span class="n">U</span><span class="o">:</span><span class="w"> </span><span class="err">欢迎回来</span><span class="w"> </span><span class="err">👋</span>
+    U-&gt;&gt;P: USTCer想登录
+    P--&gt;&gt;D: 请验证他是否真的是设备的主人
+    D-&gt;&gt;U: 请用指纹 / 面部 / 解锁确认
+    U-&gt;&gt;D: （确认通过）
+    D--&gt;&gt;P: 验证通过，没问题！
+    P--&gt;&gt;U: 欢迎回来 👋
 </code></pre></div>
-
 <h2 id="_2">「通行密钥」安全吗？<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>与传统密码相比，「通行密钥」更加安全，因为：</p>
 <ul>
@@ -679,15 +677,14 @@
   「通行密钥」是与特定设备绑定的，只保留在设备端，也只有通过设备的生物识别（如指纹、面容识别）才能完成登录。这意味着即使攻击者获取了设备，也无法通过自己的生物信息验证、访问账号。</p>
 </li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="n">flowchart</span><span class="w"> </span><span class="s">TB</span>
-<span class="w">    </span><span class="c">%% Passkey 安全原理图（去掉 title，兼容 GitHub）</span>
-<span class="w">    </span><span class="n">A</span><span class="p">[</span><span class="s">&quot;钓鱼网站 / 假网站&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;|</span><span class="s">&quot;无法伪造&quot;</span><span class="o">|</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="s">&quot;每个网站的钥匙都不同&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="n">C</span><span class="p">[</span><span class="s">&quot;密码泄露&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;|</span><span class="s">&quot;无密码可偷&quot;</span><span class="o">|</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="s">&quot;钥匙存在设备安全区&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="n">E</span><span class="p">[</span><span class="s">&quot;假网站攻击&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;|</span><span class="s">&quot;验证失败&quot;</span><span class="o">|</span><span class="w"> </span><span class="n">F</span><span class="p">[</span><span class="s">&quot;网站身份会被自动校验&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="n">G</span><span class="p">[</span><span class="s">&quot;重放攻击&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;|</span><span class="s">&quot;旧钥匙无效&quot;</span><span class="o">|</span><span class="w"> </span><span class="n">H</span><span class="p">[</span><span class="s">&quot;每次登录都是新挑战&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="n">I</span><span class="p">[</span><span class="s">&quot;数据库泄露&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;|</span><span class="s">&quot;拿不到私钥&quot;</span><span class="o">|</span><span class="w"> </span><span class="n">J</span><span class="p">[</span><span class="s">&quot;网站仅保存公钥印模&quot;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code>flowchart TB
+    %% Passkey 安全原理图（去掉 title，兼容 GitHub）
+    A[&quot;钓鱼网站 / 假网站&quot;] --&gt;|&quot;无法伪造&quot;| B[&quot;每个网站的钥匙都不同&quot;]
+    C[&quot;密码泄露&quot;] --&gt;|&quot;无密码可偷&quot;| D[&quot;钥匙存在设备安全区&quot;]
+    E[&quot;假网站攻击&quot;] --&gt;|&quot;验证失败&quot;| F[&quot;网站身份会被自动校验&quot;]
+    G[&quot;重放攻击&quot;] --&gt;|&quot;旧钥匙无效&quot;| H[&quot;每次登录都是新挑战&quot;]
+    I[&quot;数据库泄露&quot;] --&gt;|&quot;拿不到私钥&quot;| J[&quot;网站仅保存公钥印模&quot;]
 </code></pre></div>
-
 <p>通过这些机制，「通行密钥」提供了一种比传统密码更加可靠的安全保障。</p>
 <hr />
 <h2 id="_3">如何为我的统一身份认证设置「通行密钥」？<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
@@ -768,6 +765,8 @@
     
     
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11.12.0/dist/mermaid.min.js"></script>
       
     
   </body>
