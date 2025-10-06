@@ -23,10 +23,15 @@ theme:
     primary: indigo
     accent: indigo
 
+plugins:
+  - search
+  - mermaid2
+
 markdown_extensions:
   - toc:
-    permalink: true
+      permalink: true
   - tables
   - admonition
-  - codehilite
-  - mermaid2
+  - pymdownx.highlight
+  - pymdownx.details
+  - pymdownx.superfences
