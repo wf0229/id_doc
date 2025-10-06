@@ -29,7 +29,8 @@ markdown_extensions:
         - tables
         - admonition
         - codehilite
-        - pymdownx.superfences
-
-extra_javascript:
-        - https://unpkg.com/mermaid@11.12.0/dist/mermaid.min.js
+        - pymdownx.superfences:
+                custom_fences:
+                        - name: mermaid
+                                class: mermaid
+                                format: !!python/name:pymdownx.superfences.fence_code_format
