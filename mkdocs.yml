@@ -23,6 +23,10 @@ theme:
     primary: indigo
     accent: indigo
 
+plugins:
+  - search:
+  - mermaid2
+  
 markdown_extensions:
   - toc:
       permalink: true
@@ -32,11 +36,7 @@ markdown_extensions:
   - attr_list
   - pymdownx.details
   - pymdownx.superfences
-    custom_fences:
-    - name: mermaid
-      class: mermaid
-      format: !!python/name:pymdownx.superfences.fence_code_format
-
-extra_javascript:
-  - _assets/mermaid.min.js
-  - _assets/mermaid-init.js
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid
