@@ -23,13 +23,6 @@ theme:
     primary: indigo
     accent: indigo
 
-plugins:
-  - search
-  - mermaid2:
-      arguments:
-        theme: neutral
-        backgroundColor: transparent
-
 markdown_extensions:
   - toc:
       permalink: true
@@ -39,3 +32,7 @@ markdown_extensions:
   - attr_list
   - pymdownx.details
   - pymdownx.superfences
+
+extra_javascript:
+  - assets/mermaid.min.js
+  - assets/mermaid-init.js
