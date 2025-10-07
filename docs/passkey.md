@@ -19,7 +19,6 @@ sequenceDiagram
 ## 通行密钥 登录原理-使用钥匙
 ```mermaid
 sequenceDiagram
-    title 通行密钥 登录过程（用钥匙开门）
     participant U as 🧑 USTCer
     participant D as 🔐 你的设备（手机/电脑）
     participant P as 🌐 科大统一身份认证
