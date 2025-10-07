@@ -5,12 +5,12 @@ repo_name: Github
 
 nav:
   - 首页: index.md
-  - 师生用户: 
+  - 师生用户:
     - 通知公告: notice.md
     - 常见问题: faq.md
     - 通行密钥: passkey.md
     - 微信登录: wechat.md
-  - 开发者: 
+  - 开发者:
     - 安全须知: security.md
     - 开发者对接: developer.md
 
@@ -18,18 +18,18 @@ theme:
   name: material
   language: zh
   features:
-    - navigation.expand 
+    - navigation.expand
   palette:
     primary: indigo
     accent: indigo
-    
+
 plugins:
   - search
   - mermaid2:
       arguments:
         theme: neutral
         backgroundColor: transparent
-        
+
 markdown_extensions:
   - toc:
       permalink: true
@@ -37,4 +37,5 @@ markdown_extensions:
   - admonition
   - codehilite
   - attr_list
+  - pymdownx.details
   - pymdownx.superfences
