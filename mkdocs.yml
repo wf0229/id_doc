@@ -34,5 +34,5 @@ markdown_extensions:
   - pymdownx.superfences
 
 extra_javascript:
-  - assets/mermaid.min.js
-  - assets/mermaid-init.js
+  - _assets/mermaid.min.js
+  - _assets/mermaid-init.js
