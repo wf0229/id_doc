@@ -15,17 +15,26 @@ nav:
     - 开发者对接: developer.md
 
 theme:
-  name: material2
+  name: material
   language: zh
   features:
     - navigation.expand 
   palette:
     primary: indigo
     accent: indigo
-
+    
+plugins:
+  - search
+  - mermaid2:
+      arguments:
+        theme: neutral
+        backgroundColor: transparent
+        
 markdown_extensions:
   - toc:
       permalink: true
   - tables
   - admonition
   - codehilite
+  - attr_list
+  - pymdownx.superfences
