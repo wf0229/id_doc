@@ -24,7 +24,7 @@ theme:
     accent: indigo
 
 plugins:
-  - search:
+  - search
   - mermaid2
   
 markdown_extensions:
