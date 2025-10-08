@@ -1,13 +1,33 @@
 # 通行密钥
 
 「通行密钥」是存储在你的移动设备上的加密密钥。通过验证你的生物信息（如指纹、面容识别）来验证这个密钥，无需输入复杂的密码，即可快速登录中国科大统一身份认证。
+```mermaid
+flowchart LR
+  %% 样式定义
+  classDef person fill:#c5f3e0,stroke:#24927a,stroke-width:1px,rx:8,ry:8;
+  classDef device fill:#d9eaf7,stroke:#3a7ca5,stroke-width:1px,rx:8,ry:8;
+  classDef box fill:#fdf6e3,stroke:#b58900,stroke-width:1px,rx:8,ry:8;
+  classDef note fill:#fff,stroke:#999,stroke-dasharray:3 3,rx:8,ry:8;
+
+  %% 节点定义
+  U[🧑用户<br/>USTCer]:::person
+  D[🔐设备<br/>钥匙存在安全区域]:::device
+  S[🌐网站<br/>身份认证系统]:::box
+
+  %% 连线
+  U -->|可以解锁设备<br/>从而解锁“钥匙”| D
+  D -->|“钥匙”认证不会泄露钥匙| S
+```
+
+## 「通行密钥」安全性证明
+[N. Binde, C. Cremers and M. Zhao, "FIDO2, CTAP 2.1, and WebAuthn 2: Provable Security and Post-Quantum Instantiation," 2023 IEEE Symposium on Security and Privacy (SP), San Francisco, CA, USA, 2023, pp. 1471-1490, doi: 10.1109/SP46215.2023.10179454.](https://doi.org/10.1109/SP46215.2023.10179454)
 
 ## 通行密钥 注册原理-创建钥匙
 ```mermaid
 sequenceDiagram
     participant U as 🧑 USTCer
-    participant D as 🔐 你的设备（手机/电脑）
-    participant P as 🌐 科大统一身份认证
+    participant D as 🔐 设备
+    participant P as 🌐 身份认证系统
 
     U->>P: 1.我要试试通行密钥
     P-->>D: 2.请帮"你的主人"做一把独一无二的“数字钥匙”
@@ -20,13 +40,13 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant U as 🧑 USTCer
-    participant D as 🔐 你的设备（手机/电脑）
-    participant P as 🌐 科大统一身份认证
+    participant D as 🔐 设备（手机/电脑）
+    participant P as 🌐 身份认证系统
 
     U->>P: 1.USTCer想用通行密钥登录
     P-->>D: 2.请验证他是否真的是"你的主人"
-    D->>U: 3.请用指纹 / 面部 / 解锁确认
-    U->>D: 4.确认通过
+    D->>U: 3.你能解锁这个设备吗？
+    U->>D: 4.解锁成功，确认通过
     D-->>P: 5.验证通过，没问题！
     P-->>U: 6.欢迎回来 👋
 ```
@@ -79,12 +99,6 @@ flowchart TB
 1. 选择“通行密钥”
 2. 输入账号
 3. 按照提示操作即可
-
----
-
-## 「通行密钥」安全性证明
-
-详见: [https://doi.org/10.1109/SP46215.2023.10179454](https://doi.org/10.1109/SP46215.2023.10179454)
 
 ---
 
