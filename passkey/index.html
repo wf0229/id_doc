@@ -180,6 +180,13 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      「通行密钥」安全性证明
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#-">
 <span class="md-ellipsis">
       通行密钥 注册原理-创建钥匙
@@ -194,30 +201,23 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#_2">
+<a class="md-nav__link" href="#_3">
 <span class="md-ellipsis">
       「通行密钥」安全吗？
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#_3">
+<a class="md-nav__link" href="#_4">
 <span class="md-ellipsis">
       如何为我的统一身份认证设置「通行密钥」？
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#_4">
-<span class="md-ellipsis">
-      如何使用「通行密钥」登录？
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="#_5">
 <span class="md-ellipsis">
-      「通行密钥」安全性证明
+      如何使用「通行密钥」登录？
     </span>
 </a>
 </li>
@@ -284,6 +284,13 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      「通行密钥」安全性证明
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#-">
 <span class="md-ellipsis">
       通行密钥 注册原理-创建钥匙
@@ -298,30 +305,23 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#_2">
+<a class="md-nav__link" href="#_3">
 <span class="md-ellipsis">
       「通行密钥」安全吗？
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#_3">
+<a class="md-nav__link" href="#_4">
 <span class="md-ellipsis">
       如何为我的统一身份认证设置「通行密钥」？
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#_4">
-<span class="md-ellipsis">
-      如何使用「通行密钥」登录？
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="#_5">
 <span class="md-ellipsis">
-      「通行密钥」安全性证明
+      如何使用「通行密钥」登录？
     </span>
 </a>
 </li>
@@ -333,12 +333,30 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="_1">通行密钥<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
-<p>「通行密钥」是存储在你的移动设备上的加密密钥。通过验证你的生物信息（如指纹、面容识别）来验证这个密钥，无需输入复杂的密码，即可快速登录中国科大统一身份认证。</p>
+<p>「通行密钥」是存储在你的移动设备上的加密密钥。通过验证你的生物信息（如指纹、面容识别）来验证这个密钥，无需输入复杂的密码，即可快速登录中国科大统一身份认证。
+<pre class="mermaid"><code>flowchart LR
+  %% 样式定义
+  classDef person fill:#c5f3e0,stroke:#24927a,stroke-width:1px,rx:8,ry:8;
+  classDef device fill:#d9eaf7,stroke:#3a7ca5,stroke-width:1px,rx:8,ry:8;
+  classDef box fill:#fdf6e3,stroke:#b58900,stroke-width:1px,rx:8,ry:8;
+  classDef note fill:#fff,stroke:#999,stroke-dasharray:3 3,rx:8,ry:8;
+
+  %% 节点定义
+  U[🧑用户<br/>USTCer]:::person
+  D[🔐设备<br/>钥匙存在安全区域]:::device
+  S[🌐网站<br/>身份认证系统]:::box
+
+  %% 连线
+  U --&gt;|可以解锁设备<br/>从而解锁“钥匙”| D
+  D --&gt;|“钥匙”认证不会泄露钥匙| S
+</code></pre></p>
+<h2 id="_2">「通行密钥」安全性证明<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<p><a href="https://doi.org/10.1109/SP46215.2023.10179454">N. Binde, C. Cremers and M. Zhao, "FIDO2, CTAP 2.1, and WebAuthn 2: Provable Security and Post-Quantum Instantiation," 2023 IEEE Symposium on Security and Privacy (SP), San Francisco, CA, USA, 2023, pp. 1471-1490, doi: 10.1109/SP46215.2023.10179454.</a></p>
 <h2 id="-">通行密钥 注册原理-创建钥匙<a class="headerlink" href="#-" title="Permanent link">¶</a></h2>
 <pre class="mermaid"><code>sequenceDiagram
     participant U as 🧑 USTCer
-    participant D as 🔐 你的设备（手机/电脑）
-    participant P as 🌐 科大统一身份认证
+    participant D as 🔐 设备
+    participant P as 🌐 身份认证系统
 
     U-&gt;&gt;P: 1.我要试试通行密钥
     P--&gt;&gt;D: 2.请帮"你的主人"做一把独一无二的“数字钥匙”
@@ -349,17 +367,17 @@
 <h2 id="-_1">通行密钥 登录原理-使用钥匙<a class="headerlink" href="#-_1" title="Permanent link">¶</a></h2>
 <pre class="mermaid"><code>sequenceDiagram
     participant U as 🧑 USTCer
-    participant D as 🔐 你的设备（手机/电脑）
-    participant P as 🌐 科大统一身份认证
+    participant D as 🔐 设备（手机/电脑）
+    participant P as 🌐 身份认证系统
 
     U-&gt;&gt;P: 1.USTCer想用通行密钥登录
     P--&gt;&gt;D: 2.请验证他是否真的是"你的主人"
-    D-&gt;&gt;U: 3.请用指纹 / 面部 / 解锁确认
-    U-&gt;&gt;D: 4.确认通过
+    D-&gt;&gt;U: 3.你能解锁这个设备吗？
+    U-&gt;&gt;D: 4.解锁成功，确认通过
     D--&gt;&gt;P: 5.验证通过，没问题！
     P--&gt;&gt;U: 6.欢迎回来 👋
 </code></pre>
-<h2 id="_2">「通行密钥」安全吗？<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<h2 id="_3">「通行密钥」安全吗？<a class="headerlink" href="#_3" title="Permanent link">¶</a></h2>
 <p>与传统密码相比，「通行密钥」更加安全，因为：</p>
 <ul>
 <li>
@@ -386,7 +404,7 @@
 </code></pre>
 <p>通过这些机制，「通行密钥」提供了一种比传统密码更加可靠的安全保障。</p>
 <hr/>
-<h2 id="_3">如何为我的统一身份认证设置「通行密钥」？<a class="headerlink" href="#_3" title="Permanent link">¶</a></h2>
+<h2 id="_4">如何为我的统一身份认证设置「通行密钥」？<a class="headerlink" href="#_4" title="Permanent link">¶</a></h2>
 <p>你可以在登录页面点击“个人中心”，认证成功后在“个人中心”→“安全设置”→“通行密钥”中按照提示设置。<br/>
 目前支持：</p>
 <ul>
@@ -397,16 +415,13 @@
 <li>大多数 OPPO、华为设备</li>
 </ul>
 <hr/>
-<h2 id="_4">如何使用「通行密钥」登录？<a class="headerlink" href="#_4" title="Permanent link">¶</a></h2>
+<h2 id="_5">如何使用「通行密钥」登录？<a class="headerlink" href="#_5" title="Permanent link">¶</a></h2>
 <p>在添加了「通行密钥」的设备登录统一身份认证时：</p>
 <ol>
 <li>选择“通行密钥”</li>
 <li>输入账号</li>
 <li>按照提示操作即可</li>
 </ol>
-<hr/>
-<h2 id="_5">「通行密钥」安全性证明<a class="headerlink" href="#_5" title="Permanent link">¶</a></h2>
-<p>详见: <a href="https://doi.org/10.1109/SP46215.2023.10179454">https://doi.org/10.1109/SP46215.2023.10179454</a></p>
 <hr/>
 <p>如在认证过程中遇到问题，请联系网络信息中心用户服务部：<br/>
 📧 邮箱： <a href="mailto:nic@ustc.edu.cn">nic@ustc.edu.cn</a><br/>
