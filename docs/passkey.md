@@ -1,28 +1,17 @@
 # 通行密钥
 
-「通行密钥」是存储在你的移动设备上的加密密钥。通过验证你的生物信息（如指纹、面容识别）来验证这个密钥，无需输入复杂的密码，即可快速登录中国科大统一身份认证。
-```mermaid
-flowchart LR
-  %% 样式定义
-  classDef person fill:#c5f3e0,stroke:#24927a,stroke-width:1px,rx:8,ry:8;
-  classDef device fill:#d9eaf7,stroke:#3a7ca5,stroke-width:1px,rx:8,ry:8;
-  classDef box fill:#fdf6e3,stroke:#b58900,stroke-width:1px,rx:8,ry:8;
-  classDef note fill:#fff,stroke:#999,stroke-dasharray:3 3,rx:8,ry:8;
+通行密钥（Passkey）采用基于椭圆曲线算法（ECC 或 EdDSA）的非对称加密技术（Public Key Cryptography）生成并管理公钥与私钥对。
+通过这种方式，私钥始终安全地存储在本地设备的安全硬件（如 TPM 或 Secure Enclave）中，不会被导出或上传；服务器仅保存对应的公钥，用于在登录时验证签名。
 
-  %% 节点定义
-  U[🧑用户<br/>USTCer]:::person
-  D[🔐设备<br/>钥匙存在设备安全区域]:::device
-  S[🌐网站<br/>统一身份认证]:::box
-
-  %% 连线
-  U -->|可以解锁设备<br/>从而解锁“钥匙”| D
-  D -->|“钥匙认证”不会泄露钥匙| S
-```
+在具体实现中，「通行密钥」实质上是存储于个人移动设备中的私钥。当设备通过指纹、人脸或解锁方式验证机主身份后，会使用该私钥对统一身份认证系统下发的随机挑战（Challenge）进行签名。服务器收到签名并验证通过后，即确认用户身份，实现无需输入密码的安全登录。
 
 ## 「通行密钥」安全性证明
+
+通行密钥协议的安全性证明发表在网络与信息安全领域顶级学术会议IEEE Symposium on Security and Privacy，详见：
+
 [N. Binde, C. Cremers and M. Zhao, "FIDO2, CTAP 2.1, and WebAuthn 2: Provable Security and Post-Quantum Instantiation," 2023 IEEE Symposium on Security and Privacy (SP), San Francisco, CA, USA, 2023, pp. 1471-1490, doi: 10.1109/SP46215.2023.10179454.](https://doi.org/10.1109/SP46215.2023.10179454)
 
-## 通行密钥 注册原理-创建钥匙
+## 「通行密钥」 注册原理-制作钥匙
 ```mermaid
 sequenceDiagram
     participant U as 🧑 USTCer
@@ -36,7 +25,7 @@ sequenceDiagram
     P-->>U: 5.注册完成，下次登录用这把钥匙就行啦！
 ```
 
-## 通行密钥 登录原理-使用钥匙
+## 「通行密钥」 登录原理-使用钥匙
 ```mermaid
 sequenceDiagram
     participant U as 🧑 USTCer
@@ -53,7 +42,7 @@ sequenceDiagram
 
 ## 「通行密钥」安全吗？
 
-与传统密码相比，「通行密钥」更加安全，因为：
+通行密钥使用的是非对称加密技术PKI，与传统密码相比，「通行密钥」更加安全，因为：
 
 - **免受密码泄露的风险**  
   传统密码容易被泄露或猜测，尤其是在不同应用程序使用相同密码或弱密码的情况下。而「通行密钥」通过设备的生物识别进行验证，彻底消除了密码被破解、盗取或泄露的风险。
