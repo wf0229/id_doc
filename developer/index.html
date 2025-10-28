@@ -555,15 +555,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      额外一步：第三方应用获取用户多身份信息
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -580,7 +571,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       第一步：应用请求用户认证
     </span>
@@ -631,7 +622,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       用户信息
     </span>
@@ -640,7 +631,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       人员类型代码字典表
     </span>
@@ -783,15 +774,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      额外一步：第三方应用获取用户多身份信息
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -808,7 +790,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       第一步：应用请求用户认证
     </span>
@@ -859,7 +841,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       用户信息
     </span>
@@ -868,7 +850,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       人员类型代码字典表
     </span>
@@ -1334,54 +1316,36 @@
 <li><code>access_token</code>是敏感凭据，请勿在客户端或日志中暴露。</li>
 <li>如需了解人员类型、性别等字典对应关系，请联系系统管理员获取完整数据字典。</li>
 </ul>
-<h4 id="_3">额外一步：第三方应用获取用户多身份信息<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
-<p>第三方应用在获取 <code>access_token</code> 后，可使用该令牌调用接口获取用户的单/多身份信息。</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>endpoint</strong></td>
-<td><code>https://id.ustc.edu.cn/cas/oauth2.0/oauthcode/multiple/identity</code></td>
-</tr>
-<tr>
-<td><strong>method</strong></td>
-<td><code>POST</code></td>
-</tr>
-</tbody>
-</table>
-<p>同样的，需要增加请求头:</p>
+<!--
+#### 额外一步：第三方应用获取用户多身份信息
+
+第三方应用在获取 `access_token` 后，可使用该令牌调用接口获取用户的单/多身份信息。
+
+| Field        | Details                                                           |
+| ------------ | ----------------------------------------------------------------- |
+| **endpoint** | `https://id.ustc.edu.cn/cas/oauth2.0/oauthcode/multiple/identity` |
+| **method**   | `POST`                                                            |
+
+同样的，需要增加请求头:
+
 <div class="highlight"><pre><span></span><code><span class="err">Content-Type: application/x-www-form-urlencoded</span>
 </code></pre></div>
-<p>请求参数：</p>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Required</th>
-<th>Example</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>access_token</td>
-<td>MUST</td>
-<td><code>AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU</code></td>
-<td>第二步获取的 access_token</td>
-</tr>
-</tbody>
-</table>
-<p>🌿 POST 请求示例</p>
-<p><div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/oauth2.0/oauthcode/multiple/identity&quot;</span><span class="w"> </span><span class="se">\</span>
+
+请求参数：
+
+| Parameter     | Required | Example                                  | Description          |
+| ------------- | -------- | ---------------------------------------- | -------------------- |
+| access_token  | MUST     | `AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU` | 第二步获取的 access_token |
+
+
+🌿 POST 请求示例
+
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/oauth2.0/oauthcode/multiple/identity&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: multipart/form-data&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-F<span class="w"> </span><span class="s2">&quot;access_token=AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU&quot;</span>
 </code></pre></div>
-统一身份认证服务器在验证成功后将返回如下示例（以“主任”和“组长”多身份为例）：</p>
+统一身份认证服务器在验证成功后将返回如下示例（以“主任”和“组长”多身份为例）：
+
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;45433&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;users&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
@@ -1406,90 +1370,37 @@
 <span class="w">    </span><span class="p">]</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>返回参数说明：</p>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Dictionary Reference</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>id</td>
-<td>用户名</td>
-<td>无</td>
-</tr>
-<tr>
-<td>users</td>
-<td>用户身份数组，每个元素为一组身份信息</td>
-<td>无</td>
-</tr>
-</tbody>
-</table>
-<p><code>users</code> 数组中字段说明：</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-<th>Dictionary Reference</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>xbm</td>
-<td>性别码</td>
-<td>有</td>
-</tr>
-<tr>
-<td>ryzxztdm</td>
-<td>在校状态码</td>
-<td>有</td>
-</tr>
-<tr>
-<td>gid</td>
-<td>GID</td>
-<td>无</td>
-</tr>
-<tr>
-<td>email</td>
-<td>邮箱</td>
-<td>无</td>
-</tr>
-<tr>
-<td>ryfldm</td>
-<td>人员类型代码</td>
-<td>有</td>
-</tr>
-<tr>
-<td>name</td>
-<td>姓名</td>
-<td>无</td>
-</tr>
-<tr>
-<td>jrzjhm</td>
-<td>进入人主键（或学工号）</td>
-<td>无</td>
-</tr>
-<tr>
-<td>zjhm</td>
-<td>证件号码（学工号）</td>
-<td>无</td>
-</tr>
-<tr>
-<td>deptCode</td>
-<td>部门编码</td>
-<td>无</td>
-</tr>
-</tbody>
-</table>
-<p>⚠️ 安全提示：
-- <code>access_token</code> 为敏感凭据，请勿在客户端或日志中暴露。
-- 如果同一用户存在多个身份（如主任、组长），将以数组形式返回，需由应用自行选择或提示用户确认。</p>
+
+返回参数说明：
+
+| Parameter | Description        | Dictionary Reference |
+| --------- | ------------------ | -------------------- |
+| id        | 用户名                | 无                    |
+| users     | 用户身份数组，每个元素为一组身份信息 | 无                    |
+
+`users` 数组中字段说明：
+
+| Field    | Description | Dictionary Reference |
+| -------- | ----------- | -------------------- |
+| xbm      | 性别码         | 有                    |
+| ryzxztdm | 在校状态码       | 有                    |
+| gid      | GID         | 无                    |
+| email    | 邮箱          | 无                    |
+| ryfldm   | 人员类型代码      | 有                    |
+| name     | 姓名          | 无                    |
+| jrzjhm   | 进入人主键（或学工号） | 无                    |
+| zjhm     | 证件号码（学工号）   | 无                    |
+| deptCode | 部门编码        | 无                    |
+
+
+⚠️ 安全提示：
+- `access_token` 为敏感凭据，请勿在客户端或日志中暴露。
+- 如果同一用户存在多个身份（如主任、组长），将以数组形式返回，需由应用自行选择或提示用户确认。
+
+-->
+
 <h3 id="22-cas-30">2.2 CAS 3.0 接口<a class="headerlink" href="#22-cas-30" title="Permanent link">&para;</a></h3>
-<h4 id="_4">第一步：应用请求用户认证<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
+<h4 id="_3">第一步：应用请求用户认证<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
 <p>应用向统一身份认证（CAS）服务器发起认证请求。</p>
 <table>
 <thead>
@@ -1759,7 +1670,7 @@
 </table>
 <p>如果<code>logout</code>时不设置<code>service</code>，登出后用户代理会停留在<code>https://id.ustc.edu.cn</code></p>
 <h3 id="25">2.5 字典表<a class="headerlink" href="#25" title="Permanent link">&para;</a></h3>
-<h4 id="_5">用户信息<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
+<h4 id="_4">用户信息<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
 <table>
 <thead>
 <tr>
@@ -1841,7 +1752,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="_6">人员类型代码字典表<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<h4 id="_5">人员类型代码字典表<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
 <p>邮件联系<a href="mailto:wf0229@ustc.edu.cn">wf0229@ustc.edu.cn</a>获取。</p>
 <h4 id="xbm">xbm字典表<a class="headerlink" href="#xbm" title="Permanent link">&para;</a></h4>
 <table>
