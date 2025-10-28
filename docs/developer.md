@@ -211,6 +211,7 @@ curl -X POST "https://id.ustc.edu.cn/cas/oauth2.0/profile" \
 - `access_token`是敏感凭据，请勿在客户端或日志中暴露。
 - 如需了解人员类型、性别等字典对应关系，请联系系统管理员获取完整数据字典。
 
+<!--
 #### 额外一步：第三方应用获取用户多身份信息
 
 第三方应用在获取 `access_token` 后，可使用该令牌调用接口获取用户的单/多身份信息。
@@ -293,6 +294,8 @@ curl -X POST "https://id.ustc.edu.cn/cas/oauth2.0/oauthcode/multiple/identity" \
 ⚠️ 安全提示：
 - `access_token` 为敏感凭据，请勿在客户端或日志中暴露。
 - 如果同一用户存在多个身份（如主任、组长），将以数组形式返回，需由应用自行选择或提示用户确认。
+
+-->
 
 ### 2.2 CAS 3.0 接口
 
