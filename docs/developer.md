@@ -11,10 +11,10 @@
 统一身份认证系统提供单点登录（SSO）能力，支持：
 
 - **CAS 3.0**：[CAS Protocol 3.0 Specification](https://apereo.github.io/cas/7.1.x/protocol/CAS-Protocol-Specification.html)
-- **OAuth 2.0**：[OAuth 2.0](https://oauth.net/2/) 中授权码模式（Authorization Code Grant）
+- 【推荐】**OAuth 2.0**：[OAuth 2.0](https://oauth.net/2/) 中授权码模式（Authorization Code Grant）
 - **OIDC 1.0**：[OpenID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html)
 
-统一身份认证系统推荐通过 **OAuth2.0 授权码模式（Authorization Code Grant）** 接入。针对不同类型应用，对接前请做好准备：
+需要注意的是，对于新接入的应用系统，我们仅推荐使用**OAuth 2.0**进行对接，**CAS 3.0**和**OIDC 1.0**作为兼容协议进行支持。统一身份认证系统推荐通过 **OAuth2.0 授权码模式（Authorization Code Grant）** 接入。针对不同类型应用，对接前请做好准备：
 
 - 网页应用：在[网络安全工作平台](https://netsecurity.ustc.edu.cn/)完成建站申请及网站备案后，由网站负责人或管理员填写[统一身份认证接入申请](https://service.ustc.edu.cn/fe/taskCenter/one/application?app_id=234)
 - 公众号/小程序应用：[OA公文系统](https://e.ustc.edu.cn)完成新媒体备案后，联系[wf0229@ustc.edu.cn](mailto:wf0229@ustc.edu.cn)
