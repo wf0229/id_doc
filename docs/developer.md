@@ -24,7 +24,7 @@
 
 ## 2. 系统接口
 
-### 2.1 OAuth2.0 接口
+### 2.1 OAuth2.0 [推荐]
 
 开始对接时，开发者需要获得 `client_id`、`client_secret`。
 
@@ -69,7 +69,7 @@ Location: https://webapp.ustc.edu.cn/callback?code=ABCD1234&state=xyz123
 
 值得注意的是：
 
-- 一般情况下不需要传递 `scope`，统一身份认证系统会配置好每个webapp所需的用户属性并返回。
+- 一般情况下不需要传递 `scope`，，统一身份认证系统因为兼容CAS协议的原因，会根据配置好每个webapp所需的用户属性在后续的profile接口中返回。
 - 第三方应用需要必要的机制来预防CSRF(Cross-Site Request Forgery)，例如通过传递随机生成的 `state` 并校验，以避免统一身份认证的响应被劫持后导致会话混淆,即攻击者可以代替受害者与应用系统建立连接，详见 [How does CSRF work without state parameter in OAuth2.0?](https://stackoverflow.com/questions/35985551/how-does-csrf-work-without-state-parameter-in-oauth2-0/35988614#35988614)
 
 #### 第二步：第三方应用使用 `code` 获取 `access_token`
@@ -297,7 +297,7 @@ curl -X POST "https://id.ustc.edu.cn/cas/oauth2.0/oauthcode/multiple/identity" \
 
 -->
 
-### 2.2 CAS 3.0 接口
+### 2.2 CAS 3.0
 
 #### 第一步：应用请求用户认证
 
@@ -416,9 +416,193 @@ Location: https://webapp.ustc.edu.cn/login/cas_login?ticket=ST-368-gChqIqVuq9j83
 - 返回的XML需由应用解析，提取 authenticationSuccess 元素下的用户信息。
 - 如果验证失败，返回 <cas:authenticationFailure>。
 
-### 2.3 OIDC 1.0 接口
+### 2.3 OIDC
 
-TBC
+#### 第一步：第三方应用将用户认证重定向至统一身份认证
+
+|Field          |Details                                                                                                |
+|---------------|-------------------------------------------------------------------------------------------------------|
+|**endpoint**   |`https://id.ustc.edu.cn/cas/oidc/authorize`                                                            |
+|**method**     |`GET`                                                                                                  |
+
+重定向时，请提供相关参数：
+
+|Parameter      |Required   |Example                                 |Description                        |
+|---------------|-----------|----------------------------------------|-----------------------------------|
+|response_type  |MUST       |`code`                                  | 固定值`code`，表示授权码模式        |
+|client_id      |MUST       |`oidc_client_id`                        | 应用的 Client ID，由系统管理员提供  |
+|redirect_uri   |MUST       |`https://webapp.ustc.edu.cn/callback`   | 授权完成后回调地址,需要urlencode    |
+|scope          |OPTIONAL   |`gid email name`                        | 请求的权限范围，多个权限用空格分隔   |
+|state          |OPTIONAL   |`xyz987`                                | 随机生成的字符串，用于防止CSRF攻击   |
+
+示例代码：
+
+```bash
+curl https://id.ustc.edu.cn/cas/oidc/authorize?response_type=code&client_id=oidc_client_id&redirect_uri=urlencode{https://webapp.ustc.edu.cn/callback}&scope=urlencode{gid email name}
+```
+统一身份认证接到请求后，会向**用户代理**（User Agent，即浏览器）展示登录页面。
+
+用户提供有效登录凭据后，统一身份认证服务器向**用户代理**做出响应：
+
+```http
+HTTP/1.1 302 Found
+Location: https://webapp.ustc.edu.cn/callback?code=ABCD1234
+```
+
+其中:
+
+|Parameter      |Example                            |Description                                                  |
+|---------------|-----------------------------------|-------------------------------------------------------------|
+|code           |`ABCD1234`                         |统一身份认证生成的随机字符串，用以下一步换取access_token,10s过期 |
+|state          |`xyz987`                           |与request时候传递相同                                         |
+
+值得注意的是：
+
+- 一般情况下不需要传递 `scope`，统一身份认证系统因为兼容CAS协议的原因，，会根据配置好每个webapp所需的用户属性在后续的profile接口中返回。
+- 第三方应用需要必要的机制来预防CSRF(Cross-Site Request Forgery)，例如通过传递随机生成的 `state` 并校验，以避免统一身份认证的响应被劫持后导致会话混淆,即攻击者可以代替受害者与应用系统建立连接，详见 [How does CSRF work without state parameter in OAuth2.0?](https://stackoverflow.com/questions/35985551/how-does-csrf-work-without-state-parameter-in-oauth2-0/35988614#35988614)
+
+#### 第二步：第三方应用使用 `code` 获取 `access_token`
+
+第三方应用回调地址获取到 `code` 后，使用 `code` 获取 `access_token` 。
+
+|Field                  |Details                                                                                        |
+|-----------------------|-----------------------------------------------------------------------------------------------|
+|**endpoint**           |`https://id.ustc.edu.cn/cas/oidc/accessToken`                                              |
+|**method**             |`POST`                                                                                         |
+
+在获取 `access_token` 时，需要增加请求头:
+
+```http
+Content-Type: application/x-www-form-urlencoded
+```
+
+同时携带相关参数：
+
+|Parameter      |Required   |Example                              |Description                            |
+|---------------|-----------|-------------------------------------|---------------------------------------|
+|grant_type     |MUST       |`authorization_code`                 | 授权模式固定值                         |
+|client_id      |MUST       |`oidc_client_id`                     | 应用的 Client ID，系统管理员提供        |
+|client_secret  |MUST       |`9aggRf1kk0tS...`                    | 应用的 Client Secret，系统管理员提供    |
+|redirect_uri   |MUST       |`https://webapp.ustc.edu.cn/callback`| 回调地址，需与第一步一致并URL编码        |
+|code           |MUST       |`OC-9-iQBaj2rYndjtttJqJ`             | 从第一步授权返回的 code                 |
+
+🌿 请求示例
+```bash
+curl -X POST "https://id.ustc.edu.cn/cas/oidc/accessToken" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "grant_type=authorization_code" \
+     -d "client_id=oidc_client_id" \
+     -d "client_secret=9aggRf1kk0tS..." \
+     -d "redirect_uri=http%3A%2F%2Fwebapp.ustc.edu.cn%2Fcallback" \
+     -d "code=OC-9-iQBaj2rYndjtttJqJE9P6Qn-eoinZGnJ"
+```
+
+统一身份认证服务器在验证成功后将返回如下响应：
+
+```json
+{
+    "access_token":"AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU",
+    "id_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJTVC00OS0yY2VTN1RRLU5PbkprV2xieGRRMm56T3B1V01yZy1zc28tbmF0aXZlLTViY2JkZDZiODQtemNsa2IiLCJpc3MiOiJodHRwczovL3Nzby0xMS5ydWlzaGFuLmNjIiwiYXVkIjoiT2F1dGhUZXN0IiwiZXhwIjoxNzY3NjA1OTQ3LCJpYXQiOjE3Njc1OTg3NDcsIm5iZiI6MTc2NzU5ODQ0Nywic3ViIjoiMTEyMDI1MTAwOCIsImFtciI6W10sImNsaWVudF9pZCI6Ik9hdXRoVGVzdCIsInN0YXRlIjoiIiwibm9uY2UiOiIiLCJhdF9oYXNoIjoiVUFDbHJ6UlNDTVJDSFRLdVk3VnJ1ZyIsInByZWZlcnJlZF91c2VybmFtZSI6Ik9hdXRoVGVzdCJ9.Bw0WvRPJraRI35iKqyY6mZYf9xVA49yKc2_e0zS_ClSFK8SbPEGGOaFzZK3F0X23R97jNDB-XLnbZI5U3Ly2bZCHACTZbpMgrhtsCMXWLxPDkvx4qcEgErgn6MIuHRPNZAOV6goHth2OwKe5JoB2rkK4qxK7mIQpm7RdhC2aVTPfmvm6xcu-z12TvO6XtsYQcsBVHVgFgYRRDXUwpUFOe2BSB_FD1rZqbq2aOxoYcigHdaupeKbsrH5Y84uxGoHAvOWNS8AzT25qusK-oc6fA6JAOszjgQUGikTLkO1_kQecCCOc3riEwcY2ZvmvR8XxXy7dGozra3cIyShvpB-m6Q",
+    "token_type":"bearer",
+    "expires_in":7200,
+    "scope":""
+}
+```
+
+其中：
+
+| Parameter    | Example                                  | Description                   |
+| -------------| ---------------------------------------- | ----------------------------- |
+| access_token | `AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU` | 用于后续获取用户信息的访问令牌   |
+| id_token     | `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXV.....` | 用户的身份凭证                 |
+| token_type   | `bearer`                                 | 令牌类型，固定为 `bearer`      |
+| expires_in   | `7200`                                   | 有效期（单位：秒）             |
+
+如果校验失败，错误代码解释如下：
+
+| Parameter    | Example                                  | Description                   |
+| -------------| ---------------------------------------- | ----------------------------- |
+
+#### 第三步：第三方应用使用access_token获取用户信息
+
+第三方应用在获取 `access_token` 后，需要使用该令牌调用接口获取用户信息。
+
+| Field        | Details                                       |
+| ------------ | --------------------------------------------- |
+| **endpoint** | `https://id.ustc.edu.cn/cas/oidc/profile` |
+| **method**   | `POST`                                        |
+
+
+在获取用户信息时，需要增加请求头:
+
+```http
+Content-Type: application/x-www-form-urlencoded
+```
+
+同时携带相关参数：
+
+| Parameter    | Required | Example                                  | Description          |
+| ------------ | -------- | ---------------------------------------- | -------------------- |
+| access_token | MUST     | `AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU` | 第二步获取的 access_token |
+
+
+🌿 POST 请求示例
+
+```bash
+curl -X POST "https://id.ustc.edu.cn/cas/oauth2.0/profile" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "access_token=AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU"
+```
+
+统一身份认证服务器在验证成功后将返回如下响应：
+
+```json
+{
+    "sub": "45433",
+    "auth_time": 1767598733,
+    "attributes": {
+        "deptCode": "304",
+        "email": "zhangsan@mail.ustc.edu.cn",
+        "gid": "9202420483",
+        "jrzjhm": "45433",
+        "login": "45433",
+        "loginip": "117.152.207.90",
+        "logintime": "2025-05-20 22:48:42",
+        "name": "张三",
+        "objectId": "673493032d5b870006ebcf85",
+        "ryfldm": "102010000",
+        "ryzxztdm": "10",
+        "xbm": "1",
+        "zjhm": "45433"
+    },
+    "id": "45433"
+}
+```
+
+返回参数说明：
+
+| Parameter  | Description      | Dictionary Reference |
+| ---------- | ---------------- | -------------------- |
+| id         | 学工号           | 无                    |
+| sub        | 用户表示（GID）   | 无                    |
+| auth_time  | 认证时间           | 无                    |
+| attributes | 用户属性列表           | 无                    |
+| deptCode   | 部门编码             | 无                    |
+| email      | 邮箱               | 无                    |
+| gid        | GID              | 无                    |
+| login      | 用户输入的账号（GID或学工号） | 无                    |
+| loginip    | 登录 IP            | 无                    |
+| logintime  | 登录时间             | 无                    |
+| name       | 姓名               | 无                    |
+| ryfldm     | 人员类型代码           | 有                    |
+| ryzxztdm   | 在校状态码            | 有                    |
+| xbm        | 性别码              | 有                    |
+| zjhm       | 证件号码（学工号）        | 无                    |
+
+⚠️ **安全提示：**
+
+- `access_token`是敏感凭据，请勿在客户端或日志中暴露。
+- 如需了解人员类型、性别等字典对应关系，请联系系统管理员获取完整数据字典。
 
 ### 2.4 单点登出
 
