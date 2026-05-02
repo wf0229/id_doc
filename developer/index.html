@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -1238,7 +1238,7 @@
 </table>
 <p>值得注意的是：</p>
 <ul>
-<li>一般情况下不需要传递 <code>scope</code>，，统一身份认证系统因为兼容CAS协议的原因，会根据配置好每个webapp所需的用户属性在后续的profile接口中返回。</li>
+<li>一般情况下不需要传递 <code>scope</code>，统一身份认证系统因为兼容CAS协议的原因，会根据配置好每个webapp所需的用户属性在后续的profile接口中返回。</li>
 <li>第三方应用需要必要的机制来预防CSRF(Cross-Site Request Forgery)，例如通过传递随机生成的 <code>state</code> 并校验，以避免统一身份认证的响应被劫持后导致会话混淆,即攻击者可以代替受害者与应用系统建立连接，详见 <a href="https://stackoverflow.com/questions/35985551/how-does-csrf-work-without-state-parameter-in-oauth2-0/35988614#35988614">How does CSRF work without state parameter in OAuth2.0?</a></li>
 </ul>
 <h4 id="code-access_token">第二步：第三方应用使用 <code>code</code> 获取 <code>access_token</code><a class="headerlink" href="#code-access_token" title="Permanent link">&para;</a></h4>
@@ -1313,7 +1313,7 @@
 <span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;grant_type=authorization_code&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;client_id=oauth_test_client_id&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;client_secret=9aggRf1kk0tS...&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;redirect_uri=http%3A%2F%2Fwebapp.ustc.edu.cn%2Fcallback&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;redirect_uri=https%3A%2F%2Fwebapp.ustc.edu.cn%2Fcallback&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;code=OC-9-iQBaj2rYndjtttJqJE9P6Qn-eoinZGnJ&quot;</span>
 </code></pre></div></p>
 <p>统一身份认证服务器在验证成功后将返回如下响应：</p>
@@ -1448,7 +1448,7 @@
 <tbody>
 <tr>
 <td>id</td>
-<td>用户名</td>
+<td>学工号</td>
 <td>无</td>
 </tr>
 <tr>
@@ -1660,7 +1660,7 @@
 </table>
 <ul>
 <li>注意不要同时设置 <code>renew</code>和<code>gateway</code>参数，两者都设置统一身份认证服务器会忽略<code>gateway</code>。</li>
-<li><code>gateway</code>为Ture时：</li>
+<li><code>gateway</code>为True时：</li>
 <li>如果用户代理与统一身份认证服务器已经存在单点会话（session），统一身份认证服务器会将用户代理重定向到service指定的URL，并附加一个有效的<code>ticket</code>。</li>
 <li>如果用户代理与统一身份认证服务器尚不存在单点会话（session），统一身份认证服务器会将用户代理重定向到service指定的URL。</li>
 <li>中国科大统一身份认证服务器<code>/login</code>接口不支持<code>method</code>参数</li>
@@ -1749,7 +1749,7 @@
 <p>统一身份认证服务器默认返回xml结构：</p>
 <div class="highlight"><pre><span></span><code>
 </code></pre></div>
-<p>如果传递了<code>formate=json</code>，则返回<code>json</code>格式数据</p>
+<p>如果传递了<code>format=json</code>，则返回<code>json</code>格式数据</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;active&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -1929,7 +1929,7 @@
 </table>
 <p>值得注意的是：</p>
 <ul>
-<li>一般情况下不需要传递 <code>scope</code>，统一身份认证系统因为兼容CAS协议的原因，，会根据配置好每个webapp所需的用户属性在后续的profile接口中返回。</li>
+<li>一般情况下不需要传递 <code>scope</code>，统一身份认证系统因为兼容CAS协议的原因，会根据配置好每个webapp所需的用户属性在后续的profile接口中返回。</li>
 <li>第三方应用需要必要的机制来预防CSRF(Cross-Site Request Forgery)，例如通过传递随机生成的 <code>state</code> 并校验，以避免统一身份认证的响应被劫持后导致会话混淆,即攻击者可以代替受害者与应用系统建立连接，详见 <a href="https://stackoverflow.com/questions/35985551/how-does-csrf-work-without-state-parameter-in-oauth2-0/35988614#35988614">How does CSRF work without state parameter in OAuth2.0?</a></li>
 </ul>
 <h4 id="code-access_token_1">第二步：第三方应用使用 <code>code</code> 获取 <code>access_token</code><a class="headerlink" href="#code-access_token_1" title="Permanent link">&para;</a></h4>
@@ -2108,7 +2108,7 @@
 </tbody>
 </table>
 <p>🌿 POST 请求示例</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/oauth2.0/profile&quot;</span><span class="w"> </span><span class="se">\</span>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://id.ustc.edu.cn/cas/oidc/profile&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/x-www-form-urlencoded&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;access_token=AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU&quot;</span>
 </code></pre></div>
@@ -2151,7 +2151,7 @@
 </tr>
 <tr>
 <td>sub</td>
-<td>用户表示（GID）</td>
+<td>用户标识（GID）</td>
 <td>无</td>
 </tr>
 <tr>
@@ -2335,7 +2335,7 @@
 <tr>
 <td>ryzxztdm</td>
 <td>在校状态码</td>
-<td>否</td>
+<td>是</td>
 </tr>
 <tr>
 <td>xbm</td>
