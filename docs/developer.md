@@ -69,7 +69,7 @@ Location: https://webapp.ustc.edu.cn/callback?code=ABCD1234&state=xyz123
 
 值得注意的是：
 
-- 一般情况下不需要传递 `scope`，，统一身份认证系统因为兼容CAS协议的原因，会根据配置好每个webapp所需的用户属性在后续的profile接口中返回。
+- 一般情况下不需要传递 `scope`，统一身份认证系统因为兼容CAS协议的原因，会根据配置好每个webapp所需的用户属性在后续的profile接口中返回。
 - 第三方应用需要必要的机制来预防CSRF(Cross-Site Request Forgery)，例如通过传递随机生成的 `state` 并校验，以避免统一身份认证的响应被劫持后导致会话混淆,即攻击者可以代替受害者与应用系统建立连接，详见 [How does CSRF work without state parameter in OAuth2.0?](https://stackoverflow.com/questions/35985551/how-does-csrf-work-without-state-parameter-in-oauth2-0/35988614#35988614)
 
 #### 第二步：第三方应用使用 `code` 获取 `access_token`
@@ -104,7 +104,7 @@ curl -X POST "https://id.ustc.edu.cn/cas/oauth2.0/accessToken" \
      -d "grant_type=authorization_code" \
      -d "client_id=oauth_test_client_id" \
      -d "client_secret=9aggRf1kk0tS..." \
-     -d "redirect_uri=http%3A%2F%2Fwebapp.ustc.edu.cn%2Fcallback" \
+     -d "redirect_uri=https%3A%2F%2Fwebapp.ustc.edu.cn%2Fcallback" \
      -d "code=OC-9-iQBaj2rYndjtttJqJE9P6Qn-eoinZGnJ"
 ```
 
@@ -191,7 +191,7 @@ curl -X POST "https://id.ustc.edu.cn/cas/oauth2.0/profile" \
 
 | Parameter  | Description      | Dictionary Reference |
 | ---------- | ---------------- | -------------------- |
-| id         | 用户名              | 无                    |
+| id         | 学工号              | 无                    |
 | client_id | 应用 ID            | 无                    |
 | attributes | 用户属性列表           | 无                    |
 | deptCode   | 部门编码             | 无                    |
@@ -312,12 +312,12 @@ curl -X POST "https://id.ustc.edu.cn/cas/oauth2.0/oauthcode/multiple/identity" \
 
 | Parameter | Required | Example                                      | Description                 |
 | --------- | -------- | -------------------------------------------- | --------------------------- |
-| service   | MUST     | `	https%3A%2F%2Fwebapp.ustc.edu.cn%2Flogin%2Fcas_login` | 用户认证成功后，CAS将携带Ticket重定向回该地址，要求URLENCODE |
+| service   | MUST     | `https%3A%2F%2Fwebapp.ustc.edu.cn%2Flogin%2Fcas_login` | 用户认证成功后，CAS将携带Ticket重定向回该地址，要求URLENCODE |
 | renew     | OPTIONAL | `True` | 如果设置此参数，SSO 单点状态将被绕过。在这种情况下，无论CAS是否存在SSO session，CAS都要求客户端提供凭证。 |
 | gateway   | OPTIONAL | `True` | 如果设置了此参数，则CAS不会要求客户端提供凭据。 |
 
 - 注意不要同时设置 `renew`和`gateway`参数，两者都设置统一身份认证服务器会忽略`gateway`。
-- `gateway`为Ture时：
+- `gateway`为True时：
   * 如果用户代理与统一身份认证服务器已经存在单点会话（session），统一身份认证服务器会将用户代理重定向到service指定的URL，并附加一个有效的`ticket`。
   * 如果用户代理与统一身份认证服务器尚不存在单点会话（session），统一身份认证服务器会将用户代理重定向到service指定的URL。
 - 中国科大统一身份认证服务器`/login`接口不支持`method`参数
@@ -371,7 +371,7 @@ Location: https://webapp.ustc.edu.cn/login/cas_login?ticket=ST-368-gChqIqVuq9j83
 
 ```
 
-如果传递了`formate=json`，则返回`json`格式数据
+如果传递了`format=json`，则返回`json`格式数据
 
 ```json
 {
@@ -458,7 +458,7 @@ Location: https://webapp.ustc.edu.cn/callback?code=ABCD1234
 
 值得注意的是：
 
-- 一般情况下不需要传递 `scope`，统一身份认证系统因为兼容CAS协议的原因，，会根据配置好每个webapp所需的用户属性在后续的profile接口中返回。
+- 一般情况下不需要传递 `scope`，统一身份认证系统因为兼容CAS协议的原因，会根据配置好每个webapp所需的用户属性在后续的profile接口中返回。
 - 第三方应用需要必要的机制来预防CSRF(Cross-Site Request Forgery)，例如通过传递随机生成的 `state` 并校验，以避免统一身份认证的响应被劫持后导致会话混淆,即攻击者可以代替受害者与应用系统建立连接，详见 [How does CSRF work without state parameter in OAuth2.0?](https://stackoverflow.com/questions/35985551/how-does-csrf-work-without-state-parameter-in-oauth2-0/35988614#35988614)
 
 #### 第二步：第三方应用使用 `code` 获取 `access_token`
@@ -549,7 +549,7 @@ Content-Type: application/x-www-form-urlencoded
 🌿 POST 请求示例
 
 ```bash
-curl -X POST "https://id.ustc.edu.cn/cas/oauth2.0/profile" \
+curl -X POST "https://id.ustc.edu.cn/cas/oidc/profile" \
      -H "Content-Type: application/x-www-form-urlencoded" \
      -d "access_token=AT-98-kkxRFRAp7JP4HvKcooOlTjqEslglCNoU"
 ```
@@ -584,7 +584,7 @@ curl -X POST "https://id.ustc.edu.cn/cas/oauth2.0/profile" \
 | Parameter  | Description      | Dictionary Reference |
 | ---------- | ---------------- | -------------------- |
 | id         | 学工号           | 无                    |
-| sub        | 用户表示（GID）   | 无                    |
+| sub        | 用户标识（GID）   | 无                    |
 | auth_time  | 认证时间           | 无                    |
 | attributes | 用户属性列表           | 无                    |
 | deptCode   | 部门编码             | 无                    |
@@ -638,7 +638,7 @@ curl -X POST "https://id.ustc.edu.cn/cas/oauth2.0/profile" \
 | logintime    | 登录的时间                                 | 否         |
 | name         | 姓名                                      | 否         |
 | ryfldm       | 人员类型代码                                | 是         |
-| ryzxztdm     | 在校状态码                                 | 否         |
+| ryzxztdm     | 在校状态码                                 | 是         |
 | xbm          | 性别码                                    | 是         |
 | zjhm         | 证件号码（学工号）                          | 否         |
 
