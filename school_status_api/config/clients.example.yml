@@ -1,0 +1,8 @@
+clients:
+  - name: example-system
+    enabled: true
+    tokens:
+      - "replace-with-random-token"
+    allowed_ips:
+      - "192.0.2.10/32"
+      - "198.51.100.0/24"
