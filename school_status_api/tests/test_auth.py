@@ -121,12 +121,35 @@ clients:
     client = authenticate_client(
         auth_header="Bearer secret-token",
         peer_ip="127.0.0.1",
-        forwarded_for="198.51.100.7, 203.0.113.99",
+        forwarded_for="198.51.100.7",
         trusted_proxies=("127.0.0.1/32",),
         clients=clients,
     )
 
     assert client.name == "example-system"
+
+
+def test_forwarded_for_uses_nearest_untrusted_ip_from_trusted_proxy():
+    clients = load_clients_config_from_text(
+        """
+clients:
+  - name: example-system
+    enabled: true
+    tokens: [secret-token]
+    allowed_ips: [192.0.2.10/32]
+"""
+    )
+
+    with pytest.raises(AuthError) as exc_info:
+        authenticate_client(
+            auth_header="Bearer secret-token",
+            peer_ip="127.0.0.1",
+            forwarded_for="192.0.2.10, 203.0.113.77",
+            trusted_proxies=("127.0.0.1/32",),
+            clients=clients,
+        )
+
+    assert exc_info.value.status_code == 403
 
 
 def load_clients_config_from_text(text):

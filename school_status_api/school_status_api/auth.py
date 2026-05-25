@@ -7,7 +7,7 @@ from ipaddress import ip_address, ip_network
 from school_status_api.config import ClientConfig
 
 
-@dataclass(frozen=True)
+@dataclass
 class AuthError(Exception):
     status_code: int
     detail: str
@@ -59,6 +59,10 @@ def _request_ip(peer_ip: str, forwarded_for: str | None, trusted_proxies: tuple[
     peer = ip_address(peer_ip)
     trusted = tuple(ip_network(value, strict=False) for value in trusted_proxies)
     if forwarded_for and any(peer in network for network in trusted):
-        first_forwarded = forwarded_for.split(",", maxsplit=1)[0].strip()
-        return ip_address(first_forwarded)
+        forwarded_chain = [ip_address(value.strip()) for value in forwarded_for.split(",") if value.strip()]
+        for candidate in reversed(forwarded_chain):
+            if not any(candidate in network for network in trusted):
+                return candidate
+        if forwarded_chain:
+            return forwarded_chain[0]
     return peer
