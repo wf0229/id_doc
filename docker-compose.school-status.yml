@@ -22,7 +22,7 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-school_status}
       POSTGRES_USER: ${POSTGRES_USER:-school_status}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in school_status_api/.env}
     volumes:
       - school_status_postgres:/var/lib/postgresql/data
     healthcheck:

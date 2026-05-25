@@ -14,6 +14,7 @@ nav:
   - 开发者:
     - 安全须知: security.md
     - 开发者对接: developer.md
+    - 在校状态查询接口: status-api.md
 
 theme:
   name: material
