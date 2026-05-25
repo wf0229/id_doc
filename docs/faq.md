@@ -60,19 +60,9 @@ OA公文系统、财务、合同等应用，对用户身份类型做了严格限
 
 动态因子（TOTP）是一种基于时间的一次性密码，每30秒更新一次，用于二次验证。与短信相比，TOTP更安全可靠，也适合海外用户。
 
-### 不同系统推荐的动态因子（TOTP）应用？
+推荐应用：[Apple「密码」](https://apps.apple.com/us/app/passwords/id6473799789)、[Google Authenticator](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2)、微信小程序「腾讯身份验证器」。
 
-| 操作系统 / 平台     | 推荐应用                                | 备注                                  |
-|---------------------|-----------------------------------------|---------------------------------------|
-| **iOS / iPadOS**    | ✅ [Passwords](https://apps.apple.com/us/app/passwords/id6473799789) by Apple | 与Apple ID原生集成，体验一致        |
-| **Android**         | ✅ [Microsoft Authenticator](https://support.microsoft.com/zh-cn/account-billing/%E4%B8%8B%E8%BD%BDmicrosoft-authenticator-351498fc-850a-45da-b7b6-27e523b8702a) | 微软开发支持TOTP、MFA等多种功能              |
-| **微信小程序**   | ✅ 微信小程序「腾讯身份验证器」           | 使用便捷，适合微信重度用户           |
-
-### 如何启用TOTP？
-
-1. 下载正确可信的TOTP应用。
-2. 登录 [id.ustc.edu.cn](https://id.ustc.edu.cn)，进入“个人中心”。
-3. 在“安全设置”中选择“动态因子”，按提示绑定。
+👉 查看详细设置指南：[动态口令](otp.md)
 
 ---
 
