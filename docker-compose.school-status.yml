@@ -1,0 +1,36 @@
+services:
+  school-status-api:
+    build:
+      context: ./school_status_api
+    env_file:
+      - path: ./school_status_api/.env
+        required: false
+    volumes:
+      - ./school_status_api/config:/app/config:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8000:8000"
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    env_file:
+      - path: ./school_status_api/.env
+        required: false
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-school_status}
+      POSTGRES_USER: ${POSTGRES_USER:-school_status}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    volumes:
+      - school_status_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  school_status_postgres:
