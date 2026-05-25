@@ -60,7 +60,7 @@ OA公文系统、财务、合同等应用，对用户身份类型做了严格限
 
 动态因子（TOTP）是一种基于时间的一次性密码，每30秒更新一次，用于二次验证。与短信相比，TOTP更安全可靠，也适合海外用户。
 
-推荐应用：[Apple「密码」](https://apps.apple.com/us/app/passwords/id6473799789)、[Google Authenticator](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2)、微信小程序「腾讯身份验证器」。
+推荐应用：[Apple「密码」](https://apps.apple.com/us/app/passwords/id6473799789)、微信小程序「腾讯身份验证器」。
 
 👉 查看详细设置指南：[动态口令](otp.md)
 
