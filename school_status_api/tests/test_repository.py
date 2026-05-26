@@ -122,6 +122,28 @@ def test_import_rejects_version_that_is_not_ready():
     assert repository.find_by_zjhm("zjhm-1") is None
 
 
+def test_import_ready_versions_imports_all_ready_batches_in_version_order():
+    repository = make_repository()
+    repository.create_import_version(2026052602)
+    repository.stage_import_records(
+        2026052602,
+        [{"gid": "gid-2", "zjhm": "zjhm-2", "ryzxztdm": "20"}],
+    )
+    repository.mark_import_ready(2026052602)
+    repository.create_import_version(2026052601)
+    repository.stage_import_records(
+        2026052601,
+        [{"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "10"}],
+    )
+    repository.mark_import_ready(2026052601)
+
+    imported_versions = repository.import_ready_versions()
+
+    assert imported_versions == [2026052601, 2026052602]
+    assert repository.find_by_zjhm("zjhm-1").ryzxztdm == "10"
+    assert repository.find_by_zjhm("zjhm-2").ryzxztdm == "20"
+
+
 def make_repository():
     engine = create_engine("sqlite:///:memory:")
     create_schema(engine)

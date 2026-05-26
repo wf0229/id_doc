@@ -23,6 +23,7 @@ class AppSettings(BaseSettings):
     database_url: str
     clients_config_path: str = "/app/config/clients.yml"
     trusted_proxies: str = "127.0.0.1/32"
+    auto_import_interval_seconds: int = 60
 
     def trusted_proxy_networks(self) -> tuple[str, ...]:
         return tuple(value.strip() for value in self.trusted_proxies.split(",") if value.strip())

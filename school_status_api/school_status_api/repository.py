@@ -96,6 +96,20 @@ class IdentityStatusRepository:
             connection.execute(delete(identity_status_import_table).where(identity_status_import_table.c.version == version))
         return True
 
+    def import_ready_versions(self) -> list[int]:
+        with self.engine.begin() as connection:
+            versions = connection.execute(
+                select(identity_status_import_batch_table.c.version)
+                .where(identity_status_import_batch_table.c.status == "ready")
+                .order_by(identity_status_import_batch_table.c.version)
+            ).scalars().all()
+
+        imported_versions = []
+        for version in versions:
+            if self.import_ready_version(version):
+                imported_versions.append(version)
+        return imported_versions
+
     def find_by_gid(self, gid: str) -> list[IdentityStatus]:
         statement = (
             select(

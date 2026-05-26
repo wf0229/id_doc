@@ -23,9 +23,10 @@
 | 字段 | 类型 | 说明 |
 | --- | --- | --- |
 | `version` | `bigint` | 批次号，建议使用日期时间编号，例如 `2026052601` |
-| `status` | `text` | 批次状态：写入中为 `writing`，写完后改为 `ready` |
+| `status` | `text` | 批次状态：写入中为 `writing`，写完后改为 `ready`，导入完成后系统改为 `imported` |
 | `created_at` | `timestamptz` | 批次创建时间 |
 | `ready_at` | `timestamptz` | 批次写完时间 |
+| `imported_at` | `timestamptz` | 系统导入到正式查询表的时间 |
 | `row_count` | `integer` | 本批次行数 |
 
 ### 明细表
@@ -117,7 +118,17 @@ set status = 'ready',
 where version = 2026052601;
 ```
 
-批次标记为 `ready` 后，管理员运行本地导入命令，将该批次变更 upsert 到正式查询表。
+批次标记为 `ready` 后，查询服务会自动扫描并导入该批次，将变更 upsert 到正式查询表 `identity_status`。默认扫描间隔为 60 秒，因此正常情况下不需要人工切换版本或手动执行导入命令。
+
+可以用下面的 SQL 查看导入状态：
+
+```sql
+select version, status, row_count, ready_at, imported_at
+from identity_status_import_batch
+where version = 2026052601;
+```
+
+当 `status` 变为 `imported` 且 `imported_at` 有值时，表示该批次已经进入正式查询表。
 
 ## 完整示例
 
@@ -153,6 +164,6 @@ where version = 2026052601;
 - 每个批次只需要包含变更过的数据。
 - 本流程只处理新增和更新，不处理删除；需要删除或失效记录时请提前协商字段和规则。
 - 写入期间批次状态必须保持为 `writing`。
-- 只有全部写入完成后才能将状态改为 `ready`。
+- 只有全部写入完成后才能将状态改为 `ready`；标记 `ready` 后请不要继续修改该批次明细。
 - 不要直接写正式查询表 `identity_status`。
 - 生产环境建议使用 `COPY` 或批量写入，不建议逐条提交。
