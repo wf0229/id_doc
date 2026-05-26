@@ -38,7 +38,7 @@
 | `gid` | `text` | 人员全局标识 |
 | `zjhm` | `text` | 身份标识，同一版本内唯一 |
 | `ryzxztdm` | `text` | 人员在校状态代码 |
-| `pushed_at` | `timestamptz` | 写入时间 |
+| `pushed_at` | `timestamptz` | 写入时间，由写入 SQL 填充 |
 
 主键为 `(version, zjhm)`。同一个版本内，如果重复写入同一个 `zjhm`，应以后写入的数据为准。
 
@@ -57,7 +57,7 @@ set status = 'writing',
 
 ### 2. 写入明细数据
 
-推荐使用 PostgreSQL `COPY` 批量写入，性能比逐条 `insert` 更好。
+推荐使用 PostgreSQL `COPY` 批量写入，性能比逐条 `insert` 更好。为了让数据文件只包含业务字段，建议先 `COPY` 到临时表，再写入正式导入表并填充 `pushed_at`。
 
 CSV 文件建议包含四列：
 
@@ -70,7 +70,22 @@ version,gid,zjhm,ryzxztdm
 
 ```bash
 psql "$DATABASE_URL" <<'SQL'
-\copy identity_status_import (version, gid, zjhm, ryzxztdm) from 'identity_status.csv' with (format csv, header true)
+create temporary table identity_status_import_copy (
+  version bigint,
+  gid text,
+  zjhm text,
+  ryzxztdm text
+) on commit drop;
+
+\copy identity_status_import_copy (version, gid, zjhm, ryzxztdm) from 'identity_status.csv' with (format csv, header true)
+
+insert into identity_status_import (version, gid, zjhm, ryzxztdm, pushed_at)
+select version, gid, zjhm, ryzxztdm, now()
+from identity_status_import_copy
+on conflict (version, zjhm) do update
+set gid = excluded.gid,
+    ryzxztdm = excluded.ryzxztdm,
+    pushed_at = excluded.pushed_at;
 SQL
 ```
 
@@ -102,7 +117,7 @@ set status = 'ready',
 where version = 2026052601;
 ```
 
-批次标记为 `ready` 后，本地导入程序会将该版本切换为线上查询版本。
+批次标记为 `ready` 后，管理员运行本地导入命令，将该版本切换为线上查询版本。
 
 ## 完整示例
 
