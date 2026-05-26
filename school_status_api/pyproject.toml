@@ -4,11 +4,9 @@ version = "0.1.0"
 description = "Authenticated school status query API"
 requires-python = ">=3.12"
 dependencies = [
-    "apscheduler>=3.10,<4",
     "fastapi>=0.115,<1",
     "psycopg[binary]>=3.2,<4",
     "pydantic-settings>=2.6,<3",
-    "pymongo>=4.10,<5",
     "pyyaml>=6.0,<7",
     "sqlalchemy>=2.0,<3",
     "uvicorn[standard]>=0.32,<1",

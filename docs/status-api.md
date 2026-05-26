@@ -115,4 +115,62 @@ curl -H "Authorization: Bearer <token>" \
 
 ## 数据更新
 
-接口数据由上游系统同步更新。同步失败时，接口会继续提供最近一次成功同步的数据。
+接口数据由上游系统推送到本服务 PostgreSQL 的导入表。导入采用版本切换机制：上游写入新版本时，线上查询继续使用旧版本；新版本导入成功后，接口一次性切换到新版本。导入失败时，旧版本继续可用。
+
+### 导入表
+
+上游系统写入 `identity_status_import`：
+
+| 字段 | 说明 |
+| --- | --- |
+| `version` | 本次数据版本号，建议使用日期时间编号，例如 `2026052601` |
+| `gid` | 人员全局标识 |
+| `zjhm` | 身份标识，同一版本内不重复 |
+| `ryzxztdm` | 人员在校状态代码 |
+| `pushed_at` | 写入时间，默认由数据库生成 |
+
+上游系统还需要维护批次状态表 `identity_status_import_batch`：
+
+| 字段 | 说明 |
+| --- | --- |
+| `version` | 数据版本号 |
+| `status` | 批次状态，写入中为 `writing`，写完后改为 `ready` |
+| `row_count` | 本批次行数 |
+
+### 上游写入流程
+
+```sql
+insert into identity_status_import_batch (version, status, created_at, row_count)
+values (2026052601, 'writing', now(), 0);
+
+insert into identity_status_import (version, gid, zjhm, ryzxztdm, pushed_at)
+values (2026052601, '2200600958', 'P0529', '10', now());
+
+update identity_status_import_batch
+set status = 'ready',
+    ready_at = now(),
+    row_count = (
+      select count(*)
+      from identity_status_import
+      where version = 2026052601
+    )
+where version = 2026052601;
+```
+
+生产环境推荐上游使用 PostgreSQL `COPY` 或批量写入，不建议逐条提交。
+
+### 本地导入
+
+批次状态为 `ready` 后，在 API 容器中执行：
+
+```bash
+docker compose exec school-status-api \
+  python -m school_status_api.import_version 2026052601
+```
+
+导入命令会在事务中完成：
+
+- 从 `identity_status_import` 导入该版本数据到正式查询表
+- 将该版本设为当前 active version
+- 标记批次为 `active`
+- 清理旧版本查询数据和旧版本导入数据

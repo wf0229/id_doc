@@ -23,14 +23,6 @@ class AppSettings(BaseSettings):
     database_url: str
     clients_config_path: str = "/app/config/clients.yml"
     trusted_proxies: str = "127.0.0.1/32"
-    mongo_uri: str
-    mongo_database: str
-    mongo_collection: str
-    sync_hour: int = 3
-    sync_minute: int = 0
-    sync_batch_size: int = 1000
-    sync_timezone: str = "Asia/Shanghai"
-    run_initial_sync: bool = False
 
     def trusted_proxy_networks(self) -> tuple[str, ...]:
         return tuple(value.strip() for value in self.trusted_proxies.split(",") if value.strip())
