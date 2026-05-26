@@ -107,6 +107,29 @@ clients:
     assert exc_info.value.status_code == 403
 
 
+def test_rejects_invalid_peer_ip_without_internal_error():
+    clients = load_clients_config_from_text(
+        """
+clients:
+  - name: example-system
+    enabled: true
+    tokens: [secret-token]
+    allowed_ips: [192.0.2.0/24]
+"""
+    )
+
+    with pytest.raises(AuthError) as exc_info:
+        authenticate_client(
+            auth_header="Bearer secret-token",
+            peer_ip="",
+            forwarded_for=None,
+            trusted_proxies=(),
+            clients=clients,
+        )
+
+    assert exc_info.value.status_code == 403
+
+
 def test_uses_forwarded_for_only_from_trusted_proxy():
     clients = load_clients_config_from_text(
         """
@@ -127,6 +150,29 @@ clients:
     )
 
     assert client.name == "example-system"
+
+
+def test_rejects_invalid_forwarded_for_without_internal_error():
+    clients = load_clients_config_from_text(
+        """
+clients:
+  - name: example-system
+    enabled: true
+    tokens: [secret-token]
+    allowed_ips: [192.0.2.0/24]
+"""
+    )
+
+    with pytest.raises(AuthError) as exc_info:
+        authenticate_client(
+            auth_header="Bearer secret-token",
+            peer_ip="127.0.0.1",
+            forwarded_for="garbage",
+            trusted_proxies=("127.0.0.1/32",),
+            clients=clients,
+        )
+
+    assert exc_info.value.status_code == 403
 
 
 def test_forwarded_for_uses_nearest_untrusted_ip_from_trusted_proxy():

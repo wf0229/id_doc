@@ -56,13 +56,20 @@ def _find_client_by_token(token: str, clients: list[ClientConfig]) -> ClientConf
 
 
 def _request_ip(peer_ip: str, forwarded_for: str | None, trusted_proxies: tuple[str, ...]):
-    peer = ip_address(peer_ip)
+    peer = _parse_ip(peer_ip)
     trusted = tuple(ip_network(value, strict=False) for value in trusted_proxies)
     if forwarded_for and any(peer in network for network in trusted):
-        forwarded_chain = [ip_address(value.strip()) for value in forwarded_for.split(",") if value.strip()]
+        forwarded_chain = [_parse_ip(value.strip()) for value in forwarded_for.split(",") if value.strip()]
         for candidate in reversed(forwarded_chain):
             if not any(candidate in network for network in trusted):
                 return candidate
         if forwarded_chain:
             return forwarded_chain[0]
     return peer
+
+
+def _parse_ip(value: str):
+    try:
+        return ip_address(value)
+    except ValueError as exc:
+        raise AuthError(status_code=403, detail="source ip not allowed") from exc

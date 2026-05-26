@@ -10,6 +10,9 @@ COPY school_status_api ./school_status_api
 
 RUN pip install --no-cache-dir .
 
+RUN adduser --disabled-password --gecos "" --no-create-home appuser
+USER appuser
+
 EXPOSE 8000
 
 CMD ["uvicorn", "school_status_api.runtime:app", "--host", "0.0.0.0", "--port", "8000"]
