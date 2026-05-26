@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from sqlalchemy import delete, func, insert, select, update
+from sqlalchemy import delete, func, select, update
 from sqlalchemy.dialects.postgresql import insert as postgres_insert
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 
 from school_status_api.database import (
-    identity_status_active_version_table,
     identity_status_import_batch_table,
     identity_status_import_table,
     identity_status_table,
@@ -80,7 +79,6 @@ class IdentityStatusRepository:
 
             rows = connection.execute(
                 select(
-                    identity_status_import_table.c.version,
                     identity_status_import_table.c.gid,
                     identity_status_import_table.c.zjhm,
                     identity_status_import_table.c.ryzxztdm,
@@ -89,40 +87,22 @@ class IdentityStatusRepository:
             if not rows:
                 return False
 
-            connection.execute(
-                insert(identity_status_table),
-                [
-                    {
-                        "version": row["version"],
-                        "gid": row["gid"],
-                        "zjhm": row["zjhm"],
-                        "ryzxztdm": row["ryzxztdm"],
-                        "synced_at": now,
-                    }
-                    for row in rows
-                ],
-            )
-            connection.execute(self._activate_version_statement(version))
+            connection.execute(self._upsert_status_statement(rows, now))
             connection.execute(
                 update(identity_status_import_batch_table)
                 .where(identity_status_import_batch_table.c.version == version)
-                .values(status="active", imported_at=now)
+                .values(status="imported", imported_at=now)
             )
-            connection.execute(delete(identity_status_table).where(identity_status_table.c.version != version))
-            connection.execute(
-                delete(identity_status_import_table).where(identity_status_import_table.c.version != version)
-            )
+            connection.execute(delete(identity_status_import_table).where(identity_status_import_table.c.version == version))
         return True
 
     def find_by_gid(self, gid: str) -> list[IdentityStatus]:
-        active_version = self._active_version_subquery()
         statement = (
             select(
                 identity_status_table.c.gid,
                 identity_status_table.c.zjhm,
                 identity_status_table.c.ryzxztdm,
             )
-            .where(identity_status_table.c.version == active_version)
             .where(identity_status_table.c.gid == gid)
             .order_by(identity_status_table.c.zjhm)
         )
@@ -131,12 +111,11 @@ class IdentityStatusRepository:
         return [IdentityStatus(**row) for row in rows]
 
     def find_by_zjhm(self, zjhm: str) -> IdentityStatus | None:
-        active_version = self._active_version_subquery()
         statement = select(
             identity_status_table.c.gid,
             identity_status_table.c.zjhm,
             identity_status_table.c.ryzxztdm,
-        ).where(identity_status_table.c.version == active_version).where(identity_status_table.c.zjhm == zjhm)
+        ).where(identity_status_table.c.zjhm == zjhm)
         with self.engine.begin() as connection:
             row = connection.execute(statement).mappings().first()
         if row is None:
@@ -146,14 +125,12 @@ class IdentityStatusRepository:
     def find_by_zjhms(self, zjhms: list[str]) -> list[IdentityStatus]:
         if not zjhms:
             return []
-        active_version = self._active_version_subquery()
         statement = (
             select(
                 identity_status_table.c.gid,
                 identity_status_table.c.zjhm,
                 identity_status_table.c.ryzxztdm,
             )
-            .where(identity_status_table.c.version == active_version)
             .where(identity_status_table.c.zjhm.in_(zjhms))
             .order_by(identity_status_table.c.zjhm)
         )
@@ -164,14 +141,12 @@ class IdentityStatusRepository:
     def find_by_gids(self, gids: list[str]) -> list[IdentityStatus]:
         if not gids:
             return []
-        active_version = self._active_version_subquery()
         statement = (
             select(
                 identity_status_table.c.gid,
                 identity_status_table.c.zjhm,
                 identity_status_table.c.ryzxztdm,
             )
-            .where(identity_status_table.c.version == active_version)
             .where(identity_status_table.c.gid.in_(gids))
             .order_by(identity_status_table.c.gid, identity_status_table.c.zjhm)
         )
@@ -214,22 +189,27 @@ class IdentityStatusRepository:
             },
         )
 
-    def _activate_version_statement(self, version: int):
-        values = {"id": True, "version": version}
+    def _upsert_status_statement(self, rows, now):
+        values = [
+            {
+                "gid": row["gid"],
+                "zjhm": row["zjhm"],
+                "ryzxztdm": row["ryzxztdm"],
+                "synced_at": now,
+            }
+            for row in rows
+        ]
         if self.engine.dialect.name == "postgresql":
-            statement = postgres_insert(identity_status_active_version_table).values(values)
+            statement = postgres_insert(identity_status_table).values(values)
         elif self.engine.dialect.name == "sqlite":
-            statement = sqlite_insert(identity_status_active_version_table).values(values)
+            statement = sqlite_insert(identity_status_table).values(values)
         else:
             raise RuntimeError(f"unsupported database dialect: {self.engine.dialect.name}")
         return statement.on_conflict_do_update(
-            index_elements=[identity_status_active_version_table.c.id],
-            set_={"version": statement.excluded.version},
-        )
-
-    def _active_version_subquery(self):
-        return (
-            select(identity_status_active_version_table.c.version)
-            .where(identity_status_active_version_table.c.id.is_(True))
-            .scalar_subquery()
+            index_elements=[identity_status_table.c.zjhm],
+            set_={
+                "gid": statement.excluded.gid,
+                "ryzxztdm": statement.excluded.ryzxztdm,
+                "synced_at": statement.excluded.synced_at,
+            },
         )

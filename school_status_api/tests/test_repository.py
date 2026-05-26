@@ -82,7 +82,23 @@ def test_find_returns_empty_for_missing_values():
     assert repository.find_by_zjhm("missing") is None
 
 
-def test_importing_new_version_switches_active_data_atomically():
+def test_importing_incremental_batch_updates_matching_zjhm_and_keeps_absent_records():
+    repository = make_repository()
+    import_records(repository, 2026052601, [{"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "0"}])
+    import_records(repository, 2026052602, [{"gid": "gid-2", "zjhm": "zjhm-2", "ryzxztdm": "1"}])
+
+    original = repository.find_by_zjhm("zjhm-1")
+    new_record = repository.find_by_zjhm("zjhm-2")
+
+    assert original is not None
+    assert original.gid == "gid-1"
+    assert original.ryzxztdm == "0"
+    assert new_record is not None
+    assert new_record.gid == "gid-2"
+    assert new_record.ryzxztdm == "1"
+
+
+def test_importing_incremental_batch_upserts_existing_zjhm():
     repository = make_repository()
     import_records(repository, 2026052601, [{"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "0"}])
     import_records(repository, 2026052602, [{"gid": "gid-2", "zjhm": "zjhm-1", "ryzxztdm": "1"}])
@@ -92,7 +108,6 @@ def test_importing_new_version_switches_active_data_atomically():
     assert record is not None
     assert record.gid == "gid-2"
     assert record.ryzxztdm == "1"
-    assert repository.find_by_gid("gid-1") == []
 
 
 def test_import_rejects_version_that_is_not_ready():

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import BigInteger, Boolean, DateTime, Index, Integer, MetaData, String, Table, create_engine
+from sqlalchemy import BigInteger, DateTime, Index, Integer, MetaData, String, Table, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -13,10 +13,9 @@ class Base(DeclarativeBase):
 class IdentityStatusRow(Base):
     __tablename__ = "identity_status"
     __table_args__ = (
-        Index("ix_identity_status_version_gid", "version", "gid"),
+        Index("ix_identity_status_gid", "gid"),
     )
 
-    version: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     zjhm: Mapped[str] = mapped_column(String, primary_key=True)
     gid: Mapped[str] = mapped_column(String, nullable=False)
     ryzxztdm: Mapped[str] = mapped_column(String, nullable=False)
@@ -48,17 +47,9 @@ class IdentityStatusImportRow(Base):
     pushed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 
-class IdentityStatusActiveVersionRow(Base):
-    __tablename__ = "identity_status_active_version"
-
-    id: Mapped[bool] = mapped_column(Boolean, primary_key=True, default=True)
-    version: Mapped[int] = mapped_column(BigInteger, nullable=False)
-
-
 identity_status_table: Table = IdentityStatusRow.__table__
 identity_status_import_batch_table: Table = IdentityStatusImportBatchRow.__table__
 identity_status_import_table: Table = IdentityStatusImportRow.__table__
-identity_status_active_version_table: Table = IdentityStatusActiveVersionRow.__table__
 
 
 def build_engine(database_url: str):
