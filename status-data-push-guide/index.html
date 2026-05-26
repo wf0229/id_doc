@@ -8,13 +8,11 @@
       
       
       
-        <link rel="canonical" href="https://id.ustc.edu.cn/doc/status-api/">
+        <link rel="canonical" href="https://id.ustc.edu.cn/doc/status-data-push-guide/">
       
       
-        <link rel="prev" href="../developer/">
+        <link rel="prev" href="../status-api/">
       
-      
-        <link rel="next" href="../status-data-push-guide/">
       
       
         
@@ -25,7 +23,7 @@
     
     
       
-        <title>在校状态查询接口 - 统一身份认证用户手册</title>
+        <title>在校状态数据推送 - 统一身份认证用户手册</title>
       
     
     
@@ -110,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              在校状态查询接口
+              在校状态数据推送
             
           </span>
         </div>
@@ -555,6 +553,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../status-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    在校状态查询接口
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -574,7 +600,7 @@
   <span class="md-ellipsis">
     
   
-    在校状态查询接口
+    在校状态数据推送
   
 
     
@@ -592,7 +618,7 @@
   <span class="md-ellipsis">
     
   
-    在校状态查询接口
+    在校状态数据推送
   
 
     
@@ -621,7 +647,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        接入方式
+        推送目标
       
     </span>
   </a>
@@ -632,76 +658,38 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        通用说明
+        数据表
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="数据表">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        健康检查
+        批次表
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#gid" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        按 gid 查询
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#zjhm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        按 zjhm 查询
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#gid_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        批量按 gid 查询
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#zjhm_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        批量按 zjhm 查询
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        错误码
+        明细表
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -709,10 +697,49 @@
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        调用示例
+        推荐推送流程
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="推荐推送流程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 创建批次
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 写入明细数据
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 标记批次 ready
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -720,7 +747,18 @@
   <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据更新
+        完整示例
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        注意事项
       
     </span>
   </a>
@@ -731,34 +769,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../status-data-push-guide/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    在校状态数据推送
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -801,7 +811,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        接入方式
+        推送目标
       
     </span>
   </a>
@@ -812,76 +822,38 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        通用说明
+        数据表
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="数据表">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        健康检查
+        批次表
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#gid" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        按 gid 查询
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#zjhm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        按 zjhm 查询
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#gid_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        批量按 gid 查询
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#zjhm_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        批量按 zjhm 查询
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        错误码
+        明细表
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -889,10 +861,49 @@
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        调用示例
+        推荐推送流程
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="推荐推送流程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 创建批次
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 写入明细数据
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 标记批次 ready
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -900,7 +911,18 @@
   <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
-        数据更新
+        完整示例
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        注意事项
       
     </span>
   </a>
@@ -927,173 +949,207 @@
   
 
 
-<h1 id="_1">在校状态查询接口<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p>在校状态查询接口用于授权系统按 <code>gid</code> 或 <code>zjhm</code> 查询人员在校状态代码。接口仅面向已开通的系统调用，不面向浏览器用户开放。</p>
-<h2 id="_2">接入方式<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>调用方需要提前提供：</p>
-<ul>
-<li>系统名称</li>
-<li>固定出口 IP 或 IP 段</li>
-<li>接口联系人</li>
-</ul>
-<p>管理员开通后会为调用方配置访问 token 和 IP allowlist。调用方请求接口时需要同时满足：</p>
-<ul>
-<li>请求头包含有效的 <code>Authorization: Bearer &lt;token&gt;</code></li>
-<li>请求来源 IP 在已登记的 allowlist 内</li>
-</ul>
-<p>请妥善保管 token，不要写入前端代码、公开仓库或日志。</p>
-<p>部署时请使用高熵随机 token，并为 PostgreSQL 设置足够长的随机密码；不要使用示例配置中的占位值。</p>
-<h2 id="_3">通用说明<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p>接口基础路径：</p>
-<div class="highlight"><pre><span></span><code>https://id.ustc.edu.cn/doc/api/
-</code></pre></div>
-<p>返回格式为 JSON。除健康检查外，业务接口均需要鉴权。</p>
-<p>字段说明：</p>
+<h1 id="_1">在校状态数据推送说明<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>本文档说明上游系统如何将人员在校状态数据推送到本地 PostgreSQL 数据库。</p>
+<h2 id="_2">推送目标<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>上游系统每天推送一批变更数据，字段包括：</p>
 <table>
 <thead>
 <tr>
 <th>字段</th>
 <th>说明</th>
+<th>示例</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>gid</code></td>
-<td>人员全局标识。一个 <code>gid</code> 可能对应多个 <code>zjhm</code></td>
+<td>人员全局标识</td>
+<td><code>2200600958</code></td>
 </tr>
 <tr>
 <td><code>zjhm</code></td>
-<td>身份标识。<code>zjhm</code> 全局不重复</td>
+<td>身份标识，同一批次内唯一</td>
+<td><code>P0529</code></td>
 </tr>
 <tr>
 <td><code>ryzxztdm</code></td>
-<td>人员在校状态代码，接口按源数据原样返回</td>
+<td>人员在校状态代码，原样写入</td>
+<td><code>10</code></td>
 </tr>
 </tbody>
 </table>
-<h2 id="_4">健康检查<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="err">GET /doc/api/health</span>
-</code></pre></div>
-<p>示例响应：</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;ok&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="p">}</span>
-</code></pre></div>
-<h2 id="gid">按 gid 查询<a class="headerlink" href="#gid" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="err">GET /doc/api/status/by-gid/{gid}</span>
-<span class="err">Authorization: Bearer &lt;token&gt;</span>
-</code></pre></div>
-<p>示例响应：</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;gid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2200600958&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;zjhm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P0529&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;ryzxztdm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>如果 <code>gid</code> 对应多个身份，<code>items</code> 会返回多条记录。</p>
-<h2 id="zjhm">按 zjhm 查询<a class="headerlink" href="#zjhm" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="err">GET /doc/api/status/by-zjhm/{zjhm}</span>
-<span class="err">Authorization: Bearer &lt;token&gt;</span>
-</code></pre></div>
-<p>示例响应：</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;gid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2200600958&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;zjhm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P0529&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;ryzxztdm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10&quot;</span>
-<span class="p">}</span>
-</code></pre></div>
-<h2 id="gid_1">批量按 gid 查询<a class="headerlink" href="#gid_1" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="err">POST /doc/api/status/by-gids</span>
-<span class="err">Authorization: Bearer &lt;token&gt;</span>
-<span class="err">Content-Type: application/json</span>
-</code></pre></div>
-<p>请求体：</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;gids&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;2200600958&quot;</span><span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>示例响应：</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;gid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2200600958&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;zjhm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P0529&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;ryzxztdm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;not_found&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
-<span class="p">}</span>
-</code></pre></div>
-<h2 id="zjhm_1">批量按 zjhm 查询<a class="headerlink" href="#zjhm_1" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="err">POST /doc/api/status/by-zjhms</span>
-<span class="err">Authorization: Bearer &lt;token&gt;</span>
-<span class="err">Content-Type: application/json</span>
-</code></pre></div>
-<p>请求体：</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;zjhms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;P0529&quot;</span><span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>示例响应：</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;gid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2200600958&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;zjhm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P0529&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;ryzxztdm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;not_found&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>批量接口一次最多查询 100 条。超过 100 条的数据需求，请联系数据中心获取中间表。</p>
-<h2 id="_5">错误码<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>本服务按 <code>zjhm</code> 做增量 upsert。批次导入成功后，本批次中的记录会新增或覆盖正式查询表中的同 <code>zjhm</code> 记录；未出现在本批次中的旧记录保持不变。本流程不处理删除。</p>
+<h2 id="_3">数据表<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="_4">批次表<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p><code>identity_status_import_batch</code></p>
 <table>
 <thead>
 <tr>
-<th>HTTP 状态码</th>
+<th>字段</th>
+<th>类型</th>
 <th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>401</td>
-<td>缺少 token 或 token 无效</td>
+<td><code>version</code></td>
+<td><code>bigint</code></td>
+<td>批次号，建议使用日期时间编号，例如 <code>2026052601</code></td>
 </tr>
 <tr>
-<td>403</td>
-<td>token 有效，但来源 IP 不在 allowlist 内</td>
+<td><code>status</code></td>
+<td><code>text</code></td>
+<td>批次状态：写入中为 <code>writing</code>，写完后改为 <code>ready</code></td>
 </tr>
 <tr>
-<td>400</td>
-<td>请求参数不符合要求，例如批量查询超过 100 条</td>
+<td><code>created_at</code></td>
+<td><code>timestamptz</code></td>
+<td>批次创建时间</td>
 </tr>
 <tr>
-<td>404</td>
-<td>查询对象不存在</td>
+<td><code>ready_at</code></td>
+<td><code>timestamptz</code></td>
+<td>批次写完时间</td>
 </tr>
 <tr>
-<td>500</td>
-<td>服务内部错误</td>
+<td><code>row_count</code></td>
+<td><code>integer</code></td>
+<td>本批次行数</td>
 </tr>
 </tbody>
 </table>
-<p>错误响应示例：</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zjhm not found&quot;</span>
-<span class="p">}</span>
+<h3 id="_5">明细表<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p><code>identity_status_import</code></p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version</code></td>
+<td><code>bigint</code></td>
+<td>批次号</td>
+</tr>
+<tr>
+<td><code>gid</code></td>
+<td><code>text</code></td>
+<td>人员全局标识</td>
+</tr>
+<tr>
+<td><code>zjhm</code></td>
+<td><code>text</code></td>
+<td>身份标识，同一版本内唯一</td>
+</tr>
+<tr>
+<td><code>ryzxztdm</code></td>
+<td><code>text</code></td>
+<td>人员在校状态代码</td>
+</tr>
+<tr>
+<td><code>pushed_at</code></td>
+<td><code>timestamptz</code></td>
+<td>写入时间，由写入 SQL 填充</td>
+</tr>
+</tbody>
+</table>
+<p>主键为 <code>(version, zjhm)</code>。同一个版本内，如果重复写入同一个 <code>zjhm</code>，应以后写入的数据为准。</p>
+<h2 id="_6">推荐推送流程<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h3 id="1">1. 创建批次<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">identity_status_import_batch</span><span class="w"> </span><span class="p">(</span><span class="k">version</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">,</span><span class="w"> </span><span class="k">row_count</span><span class="p">)</span>
+<span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="mi">2026052601</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;writing&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">now</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="k">on</span><span class="w"> </span><span class="n">conflict</span><span class="w"> </span><span class="p">(</span><span class="k">version</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">update</span>
+<span class="k">set</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;writing&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="k">row_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ready_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="p">;</span>
 </code></pre></div>
-<h2 id="_6">调用示例<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;token&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://id.ustc.edu.cn/doc/api/status/by-zjhm/P0529&quot;</span>
+<h3 id="2">2. 写入明细数据<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p>推荐使用 PostgreSQL <code>COPY</code> 批量写入，性能比逐条 <code>insert</code> 更好。为了让数据文件只包含业务字段，建议先 <code>COPY</code> 到临时表，再写入正式导入表并填充 <code>pushed_at</code>。</p>
+<p>CSV 文件建议包含四列：</p>
+<div class="highlight"><pre><span></span><code>version,gid,zjhm,ryzxztdm
+2026052601,2200600958,P0529,10
 </code></pre></div>
-<h2 id="_7">数据更新<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<p>接口数据由上游系统推送到本服务 PostgreSQL 的导入表。上游每天推送变更过的 <code>gid</code> / <code>zjhm</code>，本服务导入时按 <code>zjhm</code> 做 upsert；未出现在本批次中的旧记录保持不变。</p>
-<p>上游数据推送流程见《在校状态数据推送》。</p>
+<p>使用 <code>psql</code> 导入：</p>
+<div class="highlight"><pre><span></span><code>psql<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$DATABASE_URL</span><span class="s2">&quot;</span><span class="w"> </span><span class="s">&lt;&lt;&#39;SQL&#39;</span>
+<span class="s">create temporary table identity_status_import_copy (</span>
+<span class="s">  version bigint,</span>
+<span class="s">  gid text,</span>
+<span class="s">  zjhm text,</span>
+<span class="s">  ryzxztdm text</span>
+<span class="s">) on commit drop;</span>
+
+<span class="s">\copy identity_status_import_copy (version, gid, zjhm, ryzxztdm) from &#39;identity_status.csv&#39; with (format csv, header true)</span>
+
+<span class="s">insert into identity_status_import (version, gid, zjhm, ryzxztdm, pushed_at)</span>
+<span class="s">select version, gid, zjhm, ryzxztdm, now()</span>
+<span class="s">from identity_status_import_copy</span>
+<span class="s">on conflict (version, zjhm) do update</span>
+<span class="s">set gid = excluded.gid,</span>
+<span class="s">    ryzxztdm = excluded.ryzxztdm,</span>
+<span class="s">    pushed_at = excluded.pushed_at;</span>
+<span class="s">SQL</span>
+</code></pre></div>
+<p>如果无法使用文件，也可以批量 <code>insert</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">identity_status_import</span><span class="w"> </span><span class="p">(</span><span class="k">version</span><span class="p">,</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">zjhm</span><span class="p">,</span><span class="w"> </span><span class="n">ryzxztdm</span><span class="p">,</span><span class="w"> </span><span class="n">pushed_at</span><span class="p">)</span>
+<span class="k">values</span>
+<span class="w">  </span><span class="p">(</span><span class="mi">2026052601</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2200600958&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;P0529&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;10&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">now</span><span class="p">())</span>
+<span class="k">on</span><span class="w"> </span><span class="n">conflict</span><span class="w"> </span><span class="p">(</span><span class="k">version</span><span class="p">,</span><span class="w"> </span><span class="n">zjhm</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">update</span>
+<span class="k">set</span><span class="w"> </span><span class="n">gid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">excluded</span><span class="p">.</span><span class="n">gid</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ryzxztdm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">excluded</span><span class="p">.</span><span class="n">ryzxztdm</span><span class="p">,</span>
+<span class="w">    </span><span class="n">pushed_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">();</span>
+</code></pre></div>
+<h3 id="3-ready">3. 标记批次 ready<a class="headerlink" href="#3-ready" title="Permanent link">&para;</a></h3>
+<p>全部明细写入完成后，执行：</p>
+<div class="highlight"><pre><span></span><code><span class="k">update</span><span class="w"> </span><span class="n">identity_status_import_batch</span>
+<span class="k">set</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ready&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ready_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">(),</span>
+<span class="w">    </span><span class="k">row_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
+<span class="w">      </span><span class="k">select</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="w">      </span><span class="k">from</span><span class="w"> </span><span class="n">identity_status_import</span>
+<span class="w">      </span><span class="k">where</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2026052601</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="k">where</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2026052601</span><span class="p">;</span>
+</code></pre></div>
+<p>批次标记为 <code>ready</code> 后，管理员运行本地导入命令，将该批次变更 upsert 到正式查询表。</p>
+<h2 id="_7">完整示例<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">identity_status_import_batch</span><span class="w"> </span><span class="p">(</span><span class="k">version</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">,</span><span class="w"> </span><span class="k">row_count</span><span class="p">)</span>
+<span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="mi">2026052601</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;writing&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">now</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="k">on</span><span class="w"> </span><span class="n">conflict</span><span class="w"> </span><span class="p">(</span><span class="k">version</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">update</span>
+<span class="k">set</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;writing&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="k">row_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ready_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="p">;</span>
+
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">identity_status_import</span><span class="w"> </span><span class="p">(</span><span class="k">version</span><span class="p">,</span><span class="w"> </span><span class="n">gid</span><span class="p">,</span><span class="w"> </span><span class="n">zjhm</span><span class="p">,</span><span class="w"> </span><span class="n">ryzxztdm</span><span class="p">,</span><span class="w"> </span><span class="n">pushed_at</span><span class="p">)</span>
+<span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="mi">2026052601</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2200600958&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;P0529&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;10&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">now</span><span class="p">())</span>
+<span class="k">on</span><span class="w"> </span><span class="n">conflict</span><span class="w"> </span><span class="p">(</span><span class="k">version</span><span class="p">,</span><span class="w"> </span><span class="n">zjhm</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">update</span>
+<span class="k">set</span><span class="w"> </span><span class="n">gid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">excluded</span><span class="p">.</span><span class="n">gid</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ryzxztdm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">excluded</span><span class="p">.</span><span class="n">ryzxztdm</span><span class="p">,</span>
+<span class="w">    </span><span class="n">pushed_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">();</span>
+
+<span class="k">update</span><span class="w"> </span><span class="n">identity_status_import_batch</span>
+<span class="k">set</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ready&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ready_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">(),</span>
+<span class="w">    </span><span class="k">row_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
+<span class="w">      </span><span class="k">select</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="w">      </span><span class="k">from</span><span class="w"> </span><span class="n">identity_status_import</span>
+<span class="w">      </span><span class="k">where</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2026052601</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="k">where</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2026052601</span><span class="p">;</span>
+</code></pre></div>
+<h2 id="_8">注意事项<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<ul>
+<li>每次推送应使用新的 <code>version</code> 作为批次号。</li>
+<li>每个批次只需要包含变更过的数据。</li>
+<li>本流程只处理新增和更新，不处理删除；需要删除或失效记录时请提前协商字段和规则。</li>
+<li>写入期间批次状态必须保持为 <code>writing</code>。</li>
+<li>只有全部写入完成后才能将状态改为 <code>ready</code>。</li>
+<li>不要直接写正式查询表 <code>identity_status</code>。</li>
+<li>生产环境建议使用 <code>COPY</code> 或批量写入，不建议逐条提交。</li>
+</ul>
 
 
 
