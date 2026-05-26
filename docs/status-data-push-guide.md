@@ -14,6 +14,8 @@
 
 本服务按 `zjhm` 做增量 upsert。批次导入成功后，本批次中的记录会新增或覆盖正式查询表中的同 `zjhm` 记录；未出现在本批次中的旧记录保持不变。本流程不处理删除。
 
+上游系统只需要把批次写入导入表，并在写完后把批次状态改为 `ready`。查询服务会自动扫描 `ready` 批次并导入到正式查询表，不需要人工切换版本。
+
 ## 数据表
 
 ### 批次表
@@ -118,9 +120,19 @@ set status = 'ready',
 where version = 2026052601;
 ```
 
-批次标记为 `ready` 后，查询服务会自动扫描并导入该批次，将变更 upsert 到正式查询表 `identity_status`。默认扫描间隔为 60 秒，因此正常情况下不需要人工切换版本或手动执行导入命令。
+批次标记为 `ready` 后，查询服务会自动扫描并导入该批次，将变更 upsert 到正式查询表 `identity_status`。
 
-可以用下面的 SQL 查看导入状态：
+## 自动导入机制
+
+查询服务容器运行时会周期性扫描 `identity_status_import_batch` 表：
+
+- 扫描条件：`status = 'ready'`
+- 默认扫描间隔：60 秒
+- 导入方式：按批次号顺序，将该批次明细 upsert 到正式查询表 `identity_status`
+- 导入完成：系统把批次状态改为 `imported`，并写入 `imported_at`
+- 人工操作：正常情况下不需要人工执行导入命令，也不需要手动切换版本
+
+可以用下面的 SQL 查看自动导入状态：
 
 ```sql
 select version, status, row_count, ready_at, imported_at
