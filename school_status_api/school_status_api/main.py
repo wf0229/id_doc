@@ -10,6 +10,7 @@ from school_status_api.config import ClientConfig
 
 MAX_BATCH_SIZE = 100
 BATCH_LIMIT_MESSAGE = "一次最多查询100条；超过100条请联系数据中心获取中间表。"
+EMPTY_BATCH_MESSAGE = "至少提供一个非空查询值。"
 
 
 class GidsRequest(BaseModel):
@@ -77,19 +78,12 @@ def create_app(*, repository, clients: list[ClientConfig], trusted_proxies: Sequ
         records = app.state.repository.find_by_gids(gids)
         records_by_gid = {gid: [] for gid in gids}
         for record in records:
-            if record.gid in records_by_gid:
-                records_by_gid[record.gid].append(record)
+            records_by_gid[record.gid].append(record)
         return {
             "items": [
                 {
                     "gid": gid,
-                    "items": [
-                        {
-                            "zjhm": record.zjhm,
-                            "ryzxztdm": record.ryzxztdm,
-                        }
-                        for record in records_by_gid[gid]
-                    ],
+                    "items": [_identity_payload(record) for record in records_by_gid[gid]],
                 }
                 for gid in gids
                 if records_by_gid[gid]
@@ -116,8 +110,14 @@ def _normalize_values(values: list[str]) -> list[str]:
 
 
 def _enforce_batch_limit(values: list[str]) -> None:
+    if not values:
+        raise HTTPException(status_code=400, detail=EMPTY_BATCH_MESSAGE)
     if len(values) > MAX_BATCH_SIZE:
         raise HTTPException(status_code=400, detail=BATCH_LIMIT_MESSAGE)
+
+
+def _identity_payload(record) -> dict[str, str]:
+    return {"zjhm": record.zjhm, "ryzxztdm": record.ryzxztdm}
 
 
 def _record_payload(record) -> dict[str, str]:

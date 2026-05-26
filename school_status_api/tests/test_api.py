@@ -104,6 +104,34 @@ def test_batch_rejects_more_than_100_values():
     assert response.json() == {"detail": "一次最多查询100条；超过100条请联系数据中心获取中间表。"}
 
 
+def test_batch_by_gids_rejects_more_than_100_values():
+    app = create_app(repository=FakeRepository(), clients=clients())
+    client = TestClient(app, client=("192.0.2.10", 50000))
+
+    response = client.post(
+        "/doc/api/status/by-gids",
+        headers={"Authorization": "Bearer secret-token"},
+        json={"gids": [f"gid-{index}" for index in range(101)]},
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": "一次最多查询100条；超过100条请联系数据中心获取中间表。"}
+
+
+def test_batch_rejects_values_that_are_empty_after_normalization():
+    app = create_app(repository=FakeRepository(), clients=clients())
+    client = TestClient(app, client=("192.0.2.10", 50000))
+
+    response = client.post(
+        "/doc/api/status/by-gids",
+        headers={"Authorization": "Bearer secret-token"},
+        json={"gids": ["  "]},
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": "至少提供一个非空查询值。"}
+
+
 def test_by_gid_returns_404_when_missing():
     app = create_app(repository=FakeRepository(), clients=clients())
     client = TestClient(app, client=("192.0.2.10", 50000))
