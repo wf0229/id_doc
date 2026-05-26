@@ -143,6 +143,42 @@ class IdentityStatusRepository:
             return None
         return IdentityStatus(**row)
 
+    def find_by_zjhms(self, zjhms: list[str]) -> list[IdentityStatus]:
+        if not zjhms:
+            return []
+        active_version = self._active_version_subquery()
+        statement = (
+            select(
+                identity_status_table.c.gid,
+                identity_status_table.c.zjhm,
+                identity_status_table.c.ryzxztdm,
+            )
+            .where(identity_status_table.c.version == active_version)
+            .where(identity_status_table.c.zjhm.in_(zjhms))
+            .order_by(identity_status_table.c.zjhm)
+        )
+        with self.engine.begin() as connection:
+            rows = connection.execute(statement).mappings().all()
+        return [IdentityStatus(**row) for row in rows]
+
+    def find_by_gids(self, gids: list[str]) -> list[IdentityStatus]:
+        if not gids:
+            return []
+        active_version = self._active_version_subquery()
+        statement = (
+            select(
+                identity_status_table.c.gid,
+                identity_status_table.c.zjhm,
+                identity_status_table.c.ryzxztdm,
+            )
+            .where(identity_status_table.c.version == active_version)
+            .where(identity_status_table.c.gid.in_(gids))
+            .order_by(identity_status_table.c.gid, identity_status_table.c.zjhm)
+        )
+        with self.engine.begin() as connection:
+            rows = connection.execute(statement).mappings().all()
+        return [IdentityStatus(**row) for row in rows]
+
     def _insert_import_batch_statement(self, version: int):
         values = {
             "version": version,

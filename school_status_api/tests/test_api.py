@@ -48,6 +48,57 @@ def test_by_zjhm_returns_single_item():
     assert response.json() == {"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "1"}
 
 
+def test_batch_by_zjhms_returns_items_and_not_found():
+    app = create_app(repository=FakeRepository(), clients=clients())
+    client = TestClient(app, client=("192.0.2.10", 50000))
+
+    response = client.post(
+        "/doc/api/status/by-zjhms",
+        headers={"Authorization": "Bearer secret-token"},
+        json={"zjhms": ["zjhm-1", "missing"]},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "items": [{"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "1"}],
+        "not_found": ["missing"],
+    }
+
+
+def test_batch_by_gids_returns_items_and_not_found():
+    app = create_app(repository=FakeRepository(), clients=clients())
+    client = TestClient(app, client=("192.0.2.10", 50000))
+
+    response = client.post(
+        "/doc/api/status/by-gids",
+        headers={"Authorization": "Bearer secret-token"},
+        json={"gids": ["gid-1", "missing"]},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "items": [
+            {"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "1"},
+            {"gid": "gid-1", "zjhm": "zjhm-2", "ryzxztdm": "0"},
+        ],
+        "not_found": ["missing"],
+    }
+
+
+def test_batch_rejects_more_than_100_values():
+    app = create_app(repository=FakeRepository(), clients=clients())
+    client = TestClient(app, client=("192.0.2.10", 50000))
+
+    response = client.post(
+        "/doc/api/status/by-zjhms",
+        headers={"Authorization": "Bearer secret-token"},
+        json={"zjhms": [f"zjhm-{index}" for index in range(101)]},
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": "一次最多查询100条；超过100条请联系数据中心获取中间表。"}
+
+
 def test_by_gid_returns_404_when_missing():
     app = create_app(repository=FakeRepository(), clients=clients())
     client = TestClient(app, client=("192.0.2.10", 50000))
@@ -106,3 +157,10 @@ class FakeRepository:
         if zjhm != "zjhm-1":
             return None
         return IdentityStatus(gid="gid-1", zjhm="zjhm-1", ryzxztdm="1")
+
+    def find_by_zjhms(self, zjhms):
+        return [record for record in [self.find_by_zjhm("zjhm-1")] if record and record.zjhm in zjhms]
+
+    def find_by_gids(self, gids):
+        records = self.find_by_gid("gid-1") if "gid-1" in gids else []
+        return records

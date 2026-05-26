@@ -35,6 +35,46 @@ def test_find_by_zjhm_returns_single_record():
     assert record.ryzxztdm == "1"
 
 
+def test_find_by_zjhms_returns_matching_records():
+    repository = make_repository()
+    import_records(
+        repository,
+        2026052601,
+        [
+            {"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "1"},
+            {"gid": "gid-2", "zjhm": "zjhm-2", "ryzxztdm": "0"},
+        ],
+    )
+
+    records = repository.find_by_zjhms(["zjhm-2", "missing", "zjhm-1"])
+
+    assert [(record.zjhm, record.gid, record.ryzxztdm) for record in records] == [
+        ("zjhm-1", "gid-1", "1"),
+        ("zjhm-2", "gid-2", "0"),
+    ]
+
+
+def test_find_by_gids_returns_all_matching_identities():
+    repository = make_repository()
+    import_records(
+        repository,
+        2026052601,
+        [
+            {"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "1"},
+            {"gid": "gid-1", "zjhm": "zjhm-2", "ryzxztdm": "0"},
+            {"gid": "gid-2", "zjhm": "zjhm-3", "ryzxztdm": "1"},
+        ],
+    )
+
+    records = repository.find_by_gids(["gid-2", "missing", "gid-1"])
+
+    assert [(record.gid, record.zjhm, record.ryzxztdm) for record in records] == [
+        ("gid-1", "zjhm-1", "1"),
+        ("gid-1", "zjhm-2", "0"),
+        ("gid-2", "zjhm-3", "1"),
+    ]
+
+
 def test_find_returns_empty_for_missing_values():
     repository = make_repository()
 

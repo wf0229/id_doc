@@ -89,12 +89,77 @@ Authorization: Bearer <token>
 }
 ```
 
+## 批量按 gid 查询
+
+```http
+POST /doc/api/status/by-gids
+Authorization: Bearer <token>
+Content-Type: application/json
+```
+
+请求体：
+
+```json
+{
+  "gids": ["2200600958"]
+}
+```
+
+示例响应：
+
+```json
+{
+  "items": [
+    {
+      "gid": "2200600958",
+      "zjhm": "P0529",
+      "ryzxztdm": "10"
+    }
+  ],
+  "not_found": []
+}
+```
+
+## 批量按 zjhm 查询
+
+```http
+POST /doc/api/status/by-zjhms
+Authorization: Bearer <token>
+Content-Type: application/json
+```
+
+请求体：
+
+```json
+{
+  "zjhms": ["P0529"]
+}
+```
+
+示例响应：
+
+```json
+{
+  "items": [
+    {
+      "gid": "2200600958",
+      "zjhm": "P0529",
+      "ryzxztdm": "10"
+    }
+  ],
+  "not_found": []
+}
+```
+
+批量接口一次最多查询 100 条。超过 100 条的数据需求，请联系数据中心获取中间表。
+
 ## 错误码
 
 | HTTP 状态码 | 说明 |
 | --- | --- |
 | 401 | 缺少 token 或 token 无效 |
 | 403 | token 有效，但来源 IP 不在 allowlist 内 |
+| 400 | 请求参数不符合要求，例如批量查询超过 100 条 |
 | 404 | 查询对象不存在 |
 | 500 | 服务内部错误 |
 
