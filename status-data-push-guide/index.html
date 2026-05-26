@@ -1000,7 +1000,7 @@
 <tr>
 <td><code>status</code></td>
 <td><code>text</code></td>
-<td>批次状态：写入中为 <code>writing</code>，写完后改为 <code>ready</code></td>
+<td>批次状态：写入中为 <code>writing</code>，写完后改为 <code>ready</code>，导入完成后系统改为 <code>imported</code></td>
 </tr>
 <tr>
 <td><code>created_at</code></td>
@@ -1011,6 +1011,11 @@
 <td><code>ready_at</code></td>
 <td><code>timestamptz</code></td>
 <td>批次写完时间</td>
+</tr>
+<tr>
+<td><code>imported_at</code></td>
+<td><code>timestamptz</code></td>
+<td>系统导入到正式查询表的时间</td>
 </tr>
 <tr>
 <td><code>row_count</code></td>
@@ -1114,7 +1119,13 @@
 <span class="w">    </span><span class="p">)</span>
 <span class="k">where</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2026052601</span><span class="p">;</span>
 </code></pre></div>
-<p>批次标记为 <code>ready</code> 后，管理员运行本地导入命令，将该批次变更 upsert 到正式查询表。</p>
+<p>批次标记为 <code>ready</code> 后，查询服务会自动扫描并导入该批次，将变更 upsert 到正式查询表 <code>identity_status</code>。默认扫描间隔为 60 秒，因此正常情况下不需要人工切换版本或手动执行导入命令。</p>
+<p>可以用下面的 SQL 查看导入状态：</p>
+<div class="highlight"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">version</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="k">row_count</span><span class="p">,</span><span class="w"> </span><span class="n">ready_at</span><span class="p">,</span><span class="w"> </span><span class="n">imported_at</span>
+<span class="k">from</span><span class="w"> </span><span class="n">identity_status_import_batch</span>
+<span class="k">where</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2026052601</span><span class="p">;</span>
+</code></pre></div>
+<p>当 <code>status</code> 变为 <code>imported</code> 且 <code>imported_at</code> 有值时，表示该批次已经进入正式查询表。</p>
 <h2 id="_7">完整示例<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">identity_status_import_batch</span><span class="w"> </span><span class="p">(</span><span class="k">version</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">,</span><span class="w"> </span><span class="k">row_count</span><span class="p">)</span>
 <span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="mi">2026052601</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;writing&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">now</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
@@ -1146,7 +1157,7 @@
 <li>每个批次只需要包含变更过的数据。</li>
 <li>本流程只处理新增和更新，不处理删除；需要删除或失效记录时请提前协商字段和规则。</li>
 <li>写入期间批次状态必须保持为 <code>writing</code>。</li>
-<li>只有全部写入完成后才能将状态改为 <code>ready</code>。</li>
+<li>只有全部写入完成后才能将状态改为 <code>ready</code>；标记 <code>ready</code> 后请不要继续修改该批次明细。</li>
 <li>不要直接写正式查询表 <code>identity_status</code>。</li>
 <li>生产环境建议使用 <code>COPY</code> 或批量写入，不建议逐条提交。</li>
 </ul>
