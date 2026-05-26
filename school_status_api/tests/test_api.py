@@ -65,7 +65,7 @@ def test_batch_by_zjhms_returns_items_and_not_found():
     }
 
 
-def test_batch_by_gids_returns_items_and_not_found():
+def test_batch_by_gids_groups_identities_by_gid_and_returns_not_found():
     app = create_app(repository=FakeRepository(), clients=clients())
     client = TestClient(app, client=("192.0.2.10", 50000))
 
@@ -78,8 +78,13 @@ def test_batch_by_gids_returns_items_and_not_found():
     assert response.status_code == 200
     assert response.json() == {
         "items": [
-            {"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "1"},
-            {"gid": "gid-1", "zjhm": "zjhm-2", "ryzxztdm": "0"},
+            {
+                "gid": "gid-1",
+                "items": [
+                    {"zjhm": "zjhm-1", "ryzxztdm": "1"},
+                    {"zjhm": "zjhm-2", "ryzxztdm": "0"},
+                ],
+            },
         ],
         "not_found": ["missing"],
     }

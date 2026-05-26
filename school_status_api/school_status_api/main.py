@@ -75,10 +75,26 @@ def create_app(*, repository, clients: list[ClientConfig], trusted_proxies: Sequ
         gids = _normalize_values(request_body.gids)
         _enforce_batch_limit(gids)
         records = app.state.repository.find_by_gids(gids)
-        found = {record.gid for record in records}
+        records_by_gid = {gid: [] for gid in gids}
+        for record in records:
+            if record.gid in records_by_gid:
+                records_by_gid[record.gid].append(record)
         return {
-            "items": [_record_payload(record) for record in records],
-            "not_found": [gid for gid in gids if gid not in found],
+            "items": [
+                {
+                    "gid": gid,
+                    "items": [
+                        {
+                            "zjhm": record.zjhm,
+                            "ryzxztdm": record.ryzxztdm,
+                        }
+                        for record in records_by_gid[gid]
+                    ],
+                }
+                for gid in gids
+                if records_by_gid[gid]
+            ],
+            "not_found": [gid for gid in gids if not records_by_gid[gid]],
         }
 
     @app.post("/doc/api/status/by-zjhms")

@@ -114,13 +114,19 @@ Content-Type: application/json
   "items": [
     {
       "gid": "2200600958",
-      "zjhm": "P0529",
-      "ryzxztdm": "10"
+      "items": [
+        {
+          "zjhm": "P0529",
+          "ryzxztdm": "10"
+        }
+      ]
     }
   ],
   "not_found": []
 }
 ```
+
+批量按 `gid` 查询时，每个命中的 `gid` 返回一个对象；对象内的 `items` 是该 `gid` 对应的身份数组。
 
 ## 批量按 zjhm 查询
 
