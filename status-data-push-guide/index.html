@@ -747,7 +747,7 @@
   <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
-        完整示例
+        自动导入机制
       
     </span>
   </a>
@@ -756,6 +756,17 @@
       
         <li class="md-nav__item">
   <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        完整示例
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
         注意事项
@@ -911,7 +922,7 @@
   <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
-        完整示例
+        自动导入机制
       
     </span>
   </a>
@@ -920,6 +931,17 @@
       
         <li class="md-nav__item">
   <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        完整示例
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
         注意事项
@@ -980,6 +1002,7 @@
 </tbody>
 </table>
 <p>本服务按 <code>zjhm</code> 做增量 upsert。批次导入成功后，本批次中的记录会新增或覆盖正式查询表中的同 <code>zjhm</code> 记录；未出现在本批次中的旧记录保持不变。本流程不处理删除。</p>
+<p>上游系统只需要把批次写入导入表，并在写完后把批次状态改为 <code>ready</code>。查询服务会自动扫描 <code>ready</code> 批次并导入到正式查询表，不需要人工切换版本。</p>
 <h2 id="_3">数据表<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <h3 id="_4">批次表<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
 <p><code>identity_status_import_batch</code></p>
@@ -1119,14 +1142,23 @@
 <span class="w">    </span><span class="p">)</span>
 <span class="k">where</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2026052601</span><span class="p">;</span>
 </code></pre></div>
-<p>批次标记为 <code>ready</code> 后，查询服务会自动扫描并导入该批次，将变更 upsert 到正式查询表 <code>identity_status</code>。默认扫描间隔为 60 秒，因此正常情况下不需要人工切换版本或手动执行导入命令。</p>
-<p>可以用下面的 SQL 查看导入状态：</p>
+<p>批次标记为 <code>ready</code> 后，查询服务会自动扫描并导入该批次，将变更 upsert 到正式查询表 <code>identity_status</code>。</p>
+<h2 id="_7">自动导入机制<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>查询服务容器运行时会周期性扫描 <code>identity_status_import_batch</code> 表：</p>
+<ul>
+<li>扫描条件：<code>status = 'ready'</code></li>
+<li>默认扫描间隔：60 秒</li>
+<li>导入方式：按批次号顺序，将该批次明细 upsert 到正式查询表 <code>identity_status</code></li>
+<li>导入完成：系统把批次状态改为 <code>imported</code>，并写入 <code>imported_at</code></li>
+<li>人工操作：正常情况下不需要人工执行导入命令，也不需要手动切换版本</li>
+</ul>
+<p>可以用下面的 SQL 查看自动导入状态：</p>
 <div class="highlight"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="k">version</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="k">row_count</span><span class="p">,</span><span class="w"> </span><span class="n">ready_at</span><span class="p">,</span><span class="w"> </span><span class="n">imported_at</span>
 <span class="k">from</span><span class="w"> </span><span class="n">identity_status_import_batch</span>
 <span class="k">where</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2026052601</span><span class="p">;</span>
 </code></pre></div>
 <p>当 <code>status</code> 变为 <code>imported</code> 且 <code>imported_at</code> 有值时，表示该批次已经进入正式查询表。</p>
-<h2 id="_7">完整示例<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<h2 id="_8">完整示例<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">identity_status_import_batch</span><span class="w"> </span><span class="p">(</span><span class="k">version</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">,</span><span class="w"> </span><span class="k">row_count</span><span class="p">)</span>
 <span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="mi">2026052601</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;writing&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">now</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
 <span class="k">on</span><span class="w"> </span><span class="n">conflict</span><span class="w"> </span><span class="p">(</span><span class="k">version</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">update</span>
@@ -1151,7 +1183,7 @@
 <span class="w">    </span><span class="p">)</span>
 <span class="k">where</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2026052601</span><span class="p">;</span>
 </code></pre></div>
-<h2 id="_8">注意事项<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<h2 id="_9">注意事项<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
 <ul>
 <li>每次推送应使用新的 <code>version</code> 作为批次号。</li>
 <li>每个批次只需要包含变更过的数据。</li>
