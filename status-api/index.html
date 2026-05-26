@@ -1021,13 +1021,18 @@
 <span class="w">  </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;gid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2200600958&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;zjhm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P0529&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;ryzxztdm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10&quot;</span>
+<span class="w">      </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;zjhm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P0529&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;ryzxztdm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">],</span>
 <span class="w">  </span><span class="nt">&quot;not_found&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="p">}</span>
 </code></pre></div>
+<p>批量按 <code>gid</code> 查询时，每个命中的 <code>gid</code> 返回一个对象；对象内的 <code>items</code> 是该 <code>gid</code> 对应的身份数组。</p>
 <h2 id="zjhm_1">批量按 zjhm 查询<a class="headerlink" href="#zjhm_1" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="err">POST /doc/api/status/by-zjhms</span>
 <span class="err">Authorization: Bearer &lt;token&gt;</span>
