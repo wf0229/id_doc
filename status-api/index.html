@@ -14,8 +14,6 @@
         <link rel="prev" href="../developer/">
       
       
-        <link rel="next" href="../status-data-push-guide/">
-      
       
         
       
@@ -736,34 +734,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../status-data-push-guide/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    在校状态数据推送
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -1098,7 +1068,7 @@
 </code></pre></div>
 <h2 id="_7">数据更新<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
 <p>接口数据来源于学工系统的 <code>USER_ZKD</code> 表，由数据中心处理后写入。查询服务通过数据库视图 <code>v_user</code> 读取最新数据，无需人工干预或手动导入。</p>
-<p>上游数据推送流程见《在校状态数据推送》。</p>
+<p>数据采用增量更新方式，与统一身份认证系统实时同步。统一身份认证在获取到人员状态变更后，接口查询结果随之更新，无需等待周期性的全量同步。</p>
 
 
 
