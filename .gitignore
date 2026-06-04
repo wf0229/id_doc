@@ -11,5 +11,6 @@ venv/
 !*.env.example
 school_status_api/config/clients.yml
 
-# MkDocs build output
+# Build artifacts
+*.egg-info/
 site/
