@@ -17,7 +17,7 @@
 
 请妥善保管 token，不要写入前端代码、公开仓库或日志。
 
-部署时请使用高熵随机 token，并为 PostgreSQL 设置足够长的随机密码；不要使用示例配置中的占位值。
+请使用高熵随机 token，不要使用示例配置中的占位值。
 
 ## 通用说明
 
@@ -159,7 +159,7 @@ Content-Type: application/json
 }
 ```
 
-批量接口一次最多查询 100 条。超过 100 条的数据需求，请联系数据中心获取中间表。
+批量接口一次最多查询 100 条。超过 100 条的数据需求，请联系数据中心协商批量数据导出方案。
 
 ## 错误码
 
@@ -181,13 +181,37 @@ Content-Type: application/json
 
 ## 调用示例
 
+以下示例使用 `<token>` 占位，调用时请替换为实际的 token。
+
+### 按 zjhm 查询
+
 ```bash
 curl -H "Authorization: Bearer <token>" \
   "https://id.ustc.edu.cn/doc/api/status/by-zjhm/P0529"
 ```
 
-## 数据更新
+### 按 gid 查询
 
-接口数据来源于学工系统的 `USER_ZKD` 表，由数据中心处理后写入。查询服务通过数据库视图 `v_user` 读取最新数据，无需人工干预或手动导入。
+```bash
+curl -H "Authorization: Bearer <token>" \
+  "https://id.ustc.edu.cn/doc/api/status/by-gid/2200600958"
+```
 
-数据采用增量更新方式，与统一身份认证系统实时同步。统一身份认证在获取到人员状态变更后，接口查询结果随之更新，无需等待周期性的全量同步。
+### 批量按 gid 查询
+
+```bash
+curl -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"gids": ["2200600958", "2200600959"]}' \
+  "https://id.ustc.edu.cn/doc/api/status/by-gids"
+```
+
+### 批量按 zjhm 查询
+
+```bash
+curl -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"zjhms": ["P0529", "P0530"]}' \
+  "https://id.ustc.edu.cn/doc/api/status/by-zjhms"
+```
+
