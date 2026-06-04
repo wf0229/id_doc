@@ -1,31 +1,31 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
-from school_status_api.database import create_schema
 from school_status_api.repository import IdentityStatusRepository
 
 
-def test_upsert_and_find_multiple_records_by_gid():
+def test_find_by_gid_returns_multiple_records():
     repository = make_repository()
-    repository.create_import_version(2026052601)
-    repository.stage_import_records(
-        2026052601,
-        [
-            {"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "1"},
-            {"gid": "gid-1", "zjhm": "zjhm-2", "ryzxztdm": "0"},
-        ],
-    )
-    repository.mark_import_ready(2026052601)
-    repository.import_ready_version(2026052601)
+    with repository.engine.begin() as conn:
+        conn.execute(
+            text(
+                "INSERT INTO v_user (gid, userid, zxzt) VALUES "
+                "('gid-1', 'zjhm-1', '1'), "
+                "('gid-1', 'zjhm-2', '0')"
+            )
+        )
 
     records = repository.find_by_gid("gid-1")
 
-    assert [record.zjhm for record in records] == ["zjhm-1", "zjhm-2"]
-    assert [record.ryzxztdm for record in records] == ["1", "0"]
+    assert [r.zjhm for r in records] == ["zjhm-1", "zjhm-2"]
+    assert [r.ryzxztdm for r in records] == ["1", "0"]
 
 
 def test_find_by_zjhm_returns_single_record():
     repository = make_repository()
-    import_records(repository, 2026052601, [{"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "1"}])
+    with repository.engine.begin() as conn:
+        conn.execute(
+            text("INSERT INTO v_user (gid, userid, zxzt) VALUES ('gid-1', 'zjhm-1', '1')")
+        )
 
     record = repository.find_by_zjhm("zjhm-1")
 
@@ -37,18 +37,18 @@ def test_find_by_zjhm_returns_single_record():
 
 def test_find_by_zjhms_returns_matching_records():
     repository = make_repository()
-    import_records(
-        repository,
-        2026052601,
-        [
-            {"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "1"},
-            {"gid": "gid-2", "zjhm": "zjhm-2", "ryzxztdm": "0"},
-        ],
-    )
+    with repository.engine.begin() as conn:
+        conn.execute(
+            text(
+                "INSERT INTO v_user (gid, userid, zxzt) VALUES "
+                "('gid-1', 'zjhm-1', '1'), "
+                "('gid-2', 'zjhm-2', '0')"
+            )
+        )
 
     records = repository.find_by_zjhms(["zjhm-2", "missing", "zjhm-1"])
 
-    assert [(record.zjhm, record.gid, record.ryzxztdm) for record in records] == [
+    assert [(r.zjhm, r.gid, r.ryzxztdm) for r in records] == [
         ("zjhm-1", "gid-1", "1"),
         ("zjhm-2", "gid-2", "0"),
     ]
@@ -56,19 +56,19 @@ def test_find_by_zjhms_returns_matching_records():
 
 def test_find_by_gids_returns_all_matching_identities():
     repository = make_repository()
-    import_records(
-        repository,
-        2026052601,
-        [
-            {"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "1"},
-            {"gid": "gid-1", "zjhm": "zjhm-2", "ryzxztdm": "0"},
-            {"gid": "gid-2", "zjhm": "zjhm-3", "ryzxztdm": "1"},
-        ],
-    )
+    with repository.engine.begin() as conn:
+        conn.execute(
+            text(
+                "INSERT INTO v_user (gid, userid, zxzt) VALUES "
+                "('gid-1', 'zjhm-1', '1'), "
+                "('gid-1', 'zjhm-2', '0'), "
+                "('gid-2', 'zjhm-3', '1')"
+            )
+        )
 
     records = repository.find_by_gids(["gid-2", "missing", "gid-1"])
 
-    assert [(record.gid, record.zjhm, record.ryzxztdm) for record in records] == [
+    assert [(r.gid, r.zjhm, r.ryzxztdm) for r in records] == [
         ("gid-1", "zjhm-1", "1"),
         ("gid-1", "zjhm-2", "0"),
         ("gid-2", "zjhm-3", "1"),
@@ -80,78 +80,43 @@ def test_find_returns_empty_for_missing_values():
 
     assert repository.find_by_gid("missing") == []
     assert repository.find_by_zjhm("missing") is None
+    assert repository.find_by_gids(["missing"]) == []
+    assert repository.find_by_zjhms(["missing"]) == []
 
 
-def test_importing_incremental_batch_updates_matching_zjhm_and_keeps_absent_records():
+def test_find_by_gids_returns_empty_for_empty_input():
     repository = make_repository()
-    import_records(repository, 2026052601, [{"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "0"}])
-    import_records(repository, 2026052602, [{"gid": "gid-2", "zjhm": "zjhm-2", "ryzxztdm": "1"}])
-
-    original = repository.find_by_zjhm("zjhm-1")
-    new_record = repository.find_by_zjhm("zjhm-2")
-
-    assert original is not None
-    assert original.gid == "gid-1"
-    assert original.ryzxztdm == "0"
-    assert new_record is not None
-    assert new_record.gid == "gid-2"
-    assert new_record.ryzxztdm == "1"
+    assert repository.find_by_gids([]) == []
 
 
-def test_importing_incremental_batch_upserts_existing_zjhm():
+def test_find_by_zjhms_returns_empty_for_empty_input():
     repository = make_repository()
-    import_records(repository, 2026052601, [{"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "0"}])
-    import_records(repository, 2026052602, [{"gid": "gid-2", "zjhm": "zjhm-1", "ryzxztdm": "1"}])
-
-    record = repository.find_by_zjhm("zjhm-1")
-
-    assert record is not None
-    assert record.gid == "gid-2"
-    assert record.ryzxztdm == "1"
+    assert repository.find_by_zjhms([]) == []
 
 
-def test_import_rejects_version_that_is_not_ready():
+def test_gid_not_unique_so_multiple_gids_can_map_to_same_userid():
+    """v_user 中 userid 唯一，但 gid 不唯一——同一个 gid 下会有多个 userid"""
     repository = make_repository()
-    repository.create_import_version(2026052601)
-    repository.stage_import_records(
-        2026052601,
-        [{"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "1"}],
-    )
+    with repository.engine.begin() as conn:
+        conn.execute(
+            text(
+                "INSERT INTO v_user (gid, userid, zxzt) VALUES "
+                "('gid-1', 'zjhm-1', '10'), "
+                "('gid-1', 'zjhm-2', '20')"
+            )
+        )
 
-    assert repository.import_ready_version(2026052601) is False
-    assert repository.find_by_zjhm("zjhm-1") is None
+    records = repository.find_by_gid("gid-1")
 
-
-def test_import_ready_versions_imports_all_ready_batches_in_version_order():
-    repository = make_repository()
-    repository.create_import_version(2026052602)
-    repository.stage_import_records(
-        2026052602,
-        [{"gid": "gid-2", "zjhm": "zjhm-2", "ryzxztdm": "20"}],
-    )
-    repository.mark_import_ready(2026052602)
-    repository.create_import_version(2026052601)
-    repository.stage_import_records(
-        2026052601,
-        [{"gid": "gid-1", "zjhm": "zjhm-1", "ryzxztdm": "10"}],
-    )
-    repository.mark_import_ready(2026052601)
-
-    imported_versions = repository.import_ready_versions()
-
-    assert imported_versions == [2026052601, 2026052602]
-    assert repository.find_by_zjhm("zjhm-1").ryzxztdm == "10"
-    assert repository.find_by_zjhm("zjhm-2").ryzxztdm == "20"
+    assert len(records) == 2
 
 
 def make_repository():
     engine = create_engine("sqlite:///:memory:")
-    create_schema(engine)
+    with engine.begin() as conn:
+        conn.execute(
+            text(
+                "CREATE TABLE v_user (gid TEXT NOT NULL, userid TEXT NOT NULL, zxzt TEXT NOT NULL)"
+            )
+        )
     return IdentityStatusRepository(engine)
-
-
-def import_records(repository, version, records):
-    repository.create_import_version(version)
-    repository.stage_import_records(version, records)
-    repository.mark_import_ready(version)
-    assert repository.import_ready_version(version) is True
