@@ -7,6 +7,7 @@ nav:
   - 首页: index.md
   - 师生用户:
     - 通知公告: notice.md
+    - 账号激活: activation.md
     - 常见问题: faq.md
     - 通行密钥: passkey.md
     - 动态口令: otp.md
